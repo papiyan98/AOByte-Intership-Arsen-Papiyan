@@ -25,3 +25,6 @@ function ajaxRequest(url, config = {type: "GET", headers: {}, data: {}}) {
     };
   });
 }
+
+// working url for GET request
+const url = "https://api.github.com/users/papiyan98";
