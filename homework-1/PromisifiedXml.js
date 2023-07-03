@@ -1,7 +1,8 @@
-function ajaxRequest(url, config) {
+function ajaxRequest(url, config = {type: "GET", headers: {}, data: {}}) {
   return new Promise(function (resolve, reject) {
-    let xhr = new XMLHttpRequest();
-    xhr.open(config.type || "GET", url);
+    const xhr = new XMLHttpRequest();
+    
+    xhr.open(config.type, url);
 
     if (Object.entries(config.headers).length) {
       for (let [name, value] of Object.entries(config.headers)) {
@@ -9,24 +10,18 @@ function ajaxRequest(url, config) {
       }
     }
 
+    xhr.send(JSON.stringify(config.data));
+
     xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
+      if (xhr.status >= 200 && xhr.status < 400) {
         resolve(xhr.response);
       } else {
-        reject({
-          statusCode: xhr.status,
-          message: xhr.statusText
-        });
+        reject(new Error(`${xhr.status}: ${xhr.statusText}`));
       }
     };
 
     xhr.onerror = () => {
-      reject({
-        statusCode: xhr.status,
-        message: xhr.statusText
-      });
+      reject(new Error("Network Error: Try again later.");
     };
-
-    xhr.send(config.data);
   });
 }
