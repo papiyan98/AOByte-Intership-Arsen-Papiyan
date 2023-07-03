@@ -9,7 +9,9 @@ class MyPromise {
       if (this.state === "pending") {
         this.state = "fulfilled";
         this.result = value;
-        this.onFulfilledFn.forEach(fn => fn(value));
+        this.onFulfilledFn.forEach(callback => {
+          queueMicrotask(() => callback(value));
+        });
       }
     }
   
@@ -17,12 +19,15 @@ class MyPromise {
       if (this.state === "pending") {
         this.state = "rejected";
         this.result = error;
-        this.onRejectedFn.forEach(fn => fn(error));
+        this.onRejectedFn.forEach(callback => {
+          queueMicrotask(() => callback(error));
+        });
       }
     }
 
     try {
-      handler(resolve, reject);
+      handler(resolve, reject)
+      
     } catch (err) {
       reject(err);
     }
@@ -33,8 +38,8 @@ class MyPromise {
       if (this.state === "pending") {
         if (onFulfilled) {
           this.onFulfilledFn.push(() => {
-            try {
-              const newResult = onFulfilled(this.result);
+            try {  
+              const newResult = queueMicrotask(() => onFulfilled(this.result));
               if (newResult instanceof MyPromise) {
                 newResult.then(resolve, reject);
               } else {
@@ -45,11 +50,11 @@ class MyPromise {
             }
           });
         }
-  
+        
         if (onRejected) {
           this.onRejectedFn.push(() => {
             try {
-              const newResult = onRejected(this.result);
+              const newResult = queueMicrotask(() => onRejected(this.result));
               if (newResult instanceof MyPromise) {
                 newResult.then(resolve, reject);
               } else {
@@ -66,7 +71,7 @@ class MyPromise {
   
       if (onFulfilled && this.state === "fulfilled") {
         try {
-          const newResult = onFulfilled(this.result);
+          const newResult = queueMicrotask(() => onFulfilled(this.result));
           if (newResult instanceof MyPromise) {
             newResult.then(resolve, reject);
           } else {
@@ -77,10 +82,15 @@ class MyPromise {
         }
         return;
       }
-  
+
+      if (!onFulfilled && this.state === "fulfilled") {
+        resolve(this.result);
+        return;
+      }
+      
       if (onRejected && this.state === "rejected") {
         try {
-          const newResult = onRejected(this.result);
+          const newResult = queueMicrotask(() => onRejected(this.result));
           if (newResult instanceof MyPromise) {
             newResult.then(resolve, reject);
           } else {
@@ -91,6 +101,11 @@ class MyPromise {
         }
         return;
       }
+
+      if (!onRejected && this.state === "rejected") {
+        reject(this.result)
+        return;
+      }
     });
   }
 
@@ -98,3 +113,15 @@ class MyPromise {
     return this.then(null, onRejected);
   } 
 }
+
+
+const promise = new MyPromise((resolve, reject) => {
+  resolve('done!')
+});
+
+// MyPromise fixed! code below works
+promise.catch(err => {
+  console.log(err);
+}).then(res => {
+  console.log(res);
+})
