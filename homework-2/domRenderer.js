@@ -32,46 +32,76 @@ class DomElement {
   }
 }
 
-class DivElement extends DomElement {}
+class DivElement extends DomElement {
+  constructor(attrs, children) {
+    super('div', attrs, children);
+  }
+}
 
-class SpanElement extends DomElement {}
+class SpanElement extends DomElement {
+  constructor(attrs, children) {
+    super('span', attrs, children);
+  }
+}
 
-class UlElement extends DomElement {}
+class UlElement extends DomElement {
+  constructor(attrs, children) {
+    super('ul', attrs, children);
+  }
+}
 
-class LiElement extends DomElement {}
+class LiElement extends DomElement {
+  constructor(attrs, children) {
+    super('li', attrs, children);
+  }
+}
 
-class FormElement extends DomElement {}
+class FormElement extends DomElement {
+  constructor(attrs, children) {
+    super('form', attrs, children);
+  }
+}
 
-class InputElement extends DomElement {}
+class InputElement extends DomElement {
+  constructor(attrs, children) {
+    super('input', attrs, children);
+  }
+}
 
-class LabelElement extends DomElement {}
+class LabelElement extends DomElement {
+  constructor(attrs, children) {
+    super('label', attrs, children);
+  }
+}
 
-class BrElement extends DomElement {}
+class BrElement extends DomElement {
+  constructor(attrs, children) {
+    super('br', attrs, children);
+  }
+}
 
 function el(nodeType, attrs, children) {
   switch (nodeType) {
     case 'div':
-      return new DivElement(nodeType, attrs, children);
+      return new DivElement(attrs, children);
     case 'span':
-      return new SpanElement(nodeType, attrs, children);
+      return new SpanElement(attrs, children);
     case 'li':
-      return new LiElement(nodeType, attrs, children);
+      return new LiElement(attrs, children);
     case 'ul':
-      return new UlElement(nodeType, attrs, children);
+      return new UlElement(attrs, children);
     case 'form':
-      return new FormElement(nodeType, attrs, children);
+      return new FormElement(attrs, children);
     case 'input':
-      return new InputElement(nodeType, attrs, children);
+      return new InputElement(attrs, children);
     case 'label':
-      return new LabelElement(nodeType, attrs, children);
+      return new LabelElement(attrs, children);
     case 'br':
-      return new BrElement(nodeType, attrs, children);
+      return new BrElement(attrs, children);
+    default:
+      return new DomElement(nodeType, attrs, children);
   }
 }
-
-// function el(nodeType, attrs, children) {
-//   return new DomElement(nodeType, attrs, children);
-// }
 
 const root = document.getElementById("root");
 
