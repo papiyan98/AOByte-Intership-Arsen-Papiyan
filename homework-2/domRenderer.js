@@ -4,7 +4,7 @@ class DomElement {
   constructor(nodeType, attrs, children) {
     this.nodeType = nodeType;
     this.attrs = attrs;
-    this.children = children;
+    this.children = Array.isArray(children) ? children : [children];
   }
 
   draw() {
@@ -17,71 +17,36 @@ class DomElement {
     }
 
     // append childs if exists
-    if (typeof this.children === 'string') {
-      // if this.children is a 'string' create and append textNode
-      const textNode = document.createTextNode(this.children);
-      elem.append(textNode);
-    } else if (Array.isArray(this.children)) {
-      // if this.children is an array, iterate over it, draw each child then append
-      this.children.forEach(child => {
+    this.children.forEach(child => {
+      if (child instanceof DomElement) {
+        // if this.children instance of DomElement draw child then append it
         elem.append(child.draw());
-      });
-    } else if (this.children instanceof DomElement) {
-      // if this.children instance of DomElement draw child then append
-      elem.append(this.children.draw());
-    }
+      } else {
+        // if this.children is a 'string' create and append textNode
+        const textNode = document.createTextNode(child);
+        elem.append(textNode);
+      }
+    });
 
     return elem;
   }
 }
 
-class DivElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class DivElement extends DomElement {}
 
-class SpanElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class SpanElement extends DomElement {}
 
-class UlElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class UlElement extends DomElement {}
 
-class LiElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class LiElement extends DomElement {}
 
-class FormElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class FormElement extends DomElement {}
 
-class InputElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class InputElement extends DomElement {}
 
-class LabelElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class LabelElement extends DomElement {}
 
-class BrElement extends DomElement {
-  draw() {
-    return super.draw();
-  }
-}
+class BrElement extends DomElement {}
 
 function el(nodeType, attrs, children) {
   switch (nodeType) {
