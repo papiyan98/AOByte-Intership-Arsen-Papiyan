@@ -40,6 +40,9 @@ rotateBtn.addEventListener('click', () => {
   // Check if trangle doesn't exist then return
   if (!triangleElement) return;
 
+  // Check if rotated triangle exist then remove it from DOM
+  if (rotatedTriangleElement) rotatedTriangleElement.remove();
+
   // Create rotated clone of triangleElement
   rotatedTriangleElement = rotateTriangle(triangleElement);
 
