@@ -1,4 +1,4 @@
-#REACT JS Homework
+# REACT JS Homework
 
 1. Create a list with posts (Lets call it a "pool")
 2. Each post must have multiple comments
