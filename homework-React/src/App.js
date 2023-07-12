@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import List from './components/List';
 
 class PostRatingLists extends React.Component {
   constructor(props) {
@@ -9,11 +10,10 @@ class PostRatingLists extends React.Component {
       addedPosts: [],
       list1: [],
       list2: [],
-      asc: false
     };
   }
 
-  addPost = (event) => {
+  addPost = (listName) => {
     const unaddedPosts = this.pool.filter(post => !this.state.addedPosts.includes(post));
 
     if (!unaddedPosts.length) return;
@@ -23,7 +23,7 @@ class PostRatingLists extends React.Component {
     this.setState({
       ...this.state,
       addedPosts: [...this.state.addedPosts, post],
-      [event.target.id]: [...this.state[event.target.id], post]
+      [listName]: [...this.state[listName], post]
     });
   }
 
@@ -55,39 +55,28 @@ class PostRatingLists extends React.Component {
     return maxAverageRatedPost;
   }
 
-  deletePost(selectedPost) {
-    let newList, newaddedPosts;
+  deletePost = (selectedPost, listName) => {
+    const newList = this.state[listName].filter(post => !(post === selectedPost));
+    
+    const newaddedPosts = this.state.addedPosts.filter(post => !(post === selectedPost));
 
-    if (this.state.list1.includes(selectedPost)) {
-      newList = this.state.list1.filter(post => !(post === selectedPost));
-      newaddedPosts = this.state.addedPosts.filter(post => !(post === selectedPost));
-      this.setState({
-        ...this.state,
-        'addedPosts': newaddedPosts,
-        'list1': newList
-      });
-    } else {
-      newList = this.state.list2.filter(post => !(post === selectedPost));
-      newaddedPosts = this.state.addedPosts.filter(post => !(post === selectedPost));
-      this.setState({
-        ...this.state,
-        'addedPosts': newaddedPosts,
-        'list2': newList
-      })
-    }
+    this.setState({
+      ...this.state,
+      'addedPosts': newaddedPosts,
+      [listName]: newList
+    });
   }
 
-  sortList(listName) {
+  sortList = (listName, asc) => {
     const newList = [...this.state[listName]].sort((a, b) => this.calcPostAverageRate(a) - this.calcPostAverageRate(b));
 
-    if (this.state.asc) {
+    if (asc) {
       newList.reverse();
     }
 
     this.setState({
       ...this.state,
       [listName]: newList,
-      asc: this.state.asc ? false : true
     });
   }
 
@@ -96,48 +85,22 @@ class PostRatingLists extends React.Component {
 
     return (
       <div className='container'>
-        <div className='left-column'>
-          <button className='sort-btn' onClick={() => this.sortList('list1')}><img src='./sort-icon.png' alt='Sort' /></button>
-          <button className='add-btn' id='list1' onClick={(event) => this.addPost(event)}>+</button>
-          <div className='list'>
-            {list1.map(post => (
-              <div key={post.id} className='post-box'>
-                <div className='post'>
-                  <div className='post-info'>
-                    <span className='title'>{post.title}</span>
-                    <span className='description'>{(post.description).slice(0, 30)}...</span>
-                  </div>
-                  <span className='average-rate'>
-                    <img src='./star-icon.png' alt='Average rate' />
-                    {parseFloat(+(this.calcPostAverageRate(post)).toPrecision(2))}
-                  </span>
-                </div>
-                <button className='delete-btn' onClick={() => this.deletePost(post)}>-</button>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className='right-column'>
-          <button className='sort-btn' onClick={() => this.sortList('list2')}><img src='./sort-icon.png' alt='Sort' /></button>
-          <button className='add-btn' id='list2' onClick={(event) => this.addPost(event)}>+</button>
-          <div className='list'>
-            {list2.map((post) => (
-              <div key={post.id} className='post-box'>
-                <div className='post'>
-                  <div className='post-info'>
-                    <span className='title'>{post.title}</span>
-                    <span className='description'>{(post.description).slice(0, 20)}</span>
-                  </div>
-                  <span className='average-rate'>
-                    <img src='./star-icon.png' alt='Average rate' />
-                    {parseFloat(+(this.calcPostAverageRate(post)).toPrecision(2))}
-                  </span>
-                </div>
-                <button className='delete-btn' onClick={() => this.deletePost(post)}>-</button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <List 
+          list={list1} 
+          addPost={this.addPost} 
+          deletePost={this.deletePost} 
+          sortList={this.sortList} 
+          getPostAverageRate={this.calcPostAverageRate} 
+          listName="list1" 
+        />
+        <List 
+          list={list2} 
+          addPost={this.addPost} 
+          deletePost={this.deletePost} 
+          sortList={this.sortList} 
+          getPostAverageRate={this.calcPostAverageRate} 
+          listName="list2" 
+        />
       </div>
     )
   }
