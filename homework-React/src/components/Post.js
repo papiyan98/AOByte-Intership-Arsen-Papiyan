@@ -17,7 +17,7 @@ class Post extends React.Component {
 
     if (!textInput.value) return;
 
-    this.props.addComment({ text: textInput.value, rate: 0 }, this.props.post.id);
+    this.props.addComment({ text: textInput.value, rate: null }, this.props.post.id);
 
     textInput.value = "";
   }
