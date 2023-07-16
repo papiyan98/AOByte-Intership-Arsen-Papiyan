@@ -23,7 +23,8 @@ class List extends React.Component {
         <button className='add-btn' onClick={() => this.props.addPost(this.props.listName)}>+</button>
         <div className='list'>
           {this.props.list.map(post => (
-            <PostPreview 
+            <PostPreview
+              key={post.id}
               post={post} 
               listName={this.props.listName} 
               deletePost={this.props.deletePost}
