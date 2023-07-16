@@ -5,17 +5,20 @@ import PostsBoard from './components/PostsBoard';
 import { calcPostAverageRate } from './helpers/calcPostAverageRate';
 import { filterMaxAverageRatedPost } from './helpers/filterMaxAverageRatedPost';
 import SearchBar from './components/SearchBox';
+import ResetButton from './components/ResetButton';
 
 class PostApp extends React.Component {
   constructor(props) {
     super(props);
+
+    this.defaultPool = this.props.pool;
     
     this.state = {
       searchedPosts: [],
       addedPosts: [],
       list1: [],
       list2: [],
-      pool: [...this.props.pool]
+      pool: structuredClone(this.props.pool)
     };
   }
 
@@ -93,7 +96,7 @@ class PostApp extends React.Component {
     newPool.forEach(post => {
       if (post.id === postId) {
         post.comments.forEach(comment => {
-          if (JSON.stringify(comment) === JSON.stringify(ratedCommentData.comment) && ratedCommentData.index === post.comments.indexOf(comment)) {
+          if (JSON.stringify(comment) !== JSON.stringify(ratedCommentData.comment) && ratedCommentData.index === post.comments.indexOf(comment)) {
             if (comment.rate) {
               comment.rate = (comment.rate + newRate) / 2;
             } else {
@@ -110,11 +113,39 @@ class PostApp extends React.Component {
     });
   }
 
+  resetApp = () => {
+    document.querySelectorAll('.rate-btn').forEach(button => {
+      Array.from(button.children).forEach(child => {
+        switch (child.tagName) {
+          case 'IMG':
+            child.src = "./rate-icon.png";
+            break;
+          case 'SPAN':
+            child.innerHTML = "Rate"
+            break;
+          default:
+            break;
+        }
+      });
+    });
+
+    this.setState({
+      searchedPosts: [],
+      addedPosts: [],
+      list1: [],
+      list2: [],
+      pool: structuredClone(this.props.pool)
+    });
+  }
+
   render() {
     const { list1, list2 } = this.state;
 
     return (
       <div className='app-container'>
+        <ResetButton 
+          resetApp={this.resetApp}
+        />
         <SearchBar 
           pool={this.state.pool}
           filterSearchedPosts={this.filterSearchedPosts}
