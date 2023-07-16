@@ -92,6 +92,8 @@ class Comment extends React.Component {
   }
 
   render() {
+    const rate = (!this.props.comment.rate) ? 0 : this.props.comment.rate;
+    
     return (
       <div className="comment" data-commentinfo={JSON.stringify({comment: {...this.props.comment}, index: this.props.commentIndex})}>
         <div className="comment-info">
