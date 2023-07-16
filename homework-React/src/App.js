@@ -94,7 +94,11 @@ class PostApp extends React.Component {
       if (post.id === postId) {
         post.comments.forEach(comment => {
           if (JSON.stringify(comment) === JSON.stringify(ratedCommentData.comment) && ratedCommentData.index === post.comments.indexOf(comment)) {
-            comment.rate = (comment.rate + newRate) / 2;
+            if (comment.rate) {
+              comment.rate = (comment.rate + newRate) / 2;
+            } else {
+              comment.rate = newRate;
+            }
           }
         });
       }
