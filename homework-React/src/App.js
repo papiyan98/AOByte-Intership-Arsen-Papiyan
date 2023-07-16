@@ -1,58 +1,65 @@
 import React from 'react';
 import './App.css';
 import List from './components/List';
+import PostsBoard from './components/PostsBoard';
+import { calcPostAverageRate } from './helpers/calcPostAverageRate';
+import { filterMaxAverageRatedPost } from './helpers/filterMaxAverageRatedPost';
+import SearchBar from './components/SearchBox';
 
-class PostRatingLists extends React.Component {
+class PostApp extends React.Component {
   constructor(props) {
     super(props);
-    this.pool = props.pool;
+    
     this.state = {
+      searchedPosts: [],
       addedPosts: [],
       list1: [],
       list2: [],
+      pool: [...this.props.pool]
     };
   }
 
+  clearSearchedPosts = () => {
+    this.setState({
+      ...this.state,
+      searchedPosts: []
+    });
+  }
+
+  filterSearchedPosts = (post) => {
+    this.setState({
+      ...this.state,
+      searchedPosts: [...this.state.searchedPosts, post]
+    });
+  }
+
+  addComment = (comment, id) => {
+    const newPool = [...this.state.pool];
+
+    newPool.forEach(post => {
+      if (post.id === id) {
+        post.comments.push(comment);
+      }
+    });
+
+    this.setState({
+      ...this.state,
+      pool: [...newPool]
+    });
+  }
+
   addPost = (listName) => {
-    const unaddedPosts = this.pool.filter(post => !this.state.addedPosts.includes(post));
+    const unaddedPosts = this.state.pool.filter(post => !this.state.addedPosts.includes(post));
 
     if (!unaddedPosts.length) return;
 
-    const post = this.filterMaxAverageRatedPost(unaddedPosts);
+    const post = filterMaxAverageRatedPost(unaddedPosts);
     
     this.setState({
       ...this.state,
       addedPosts: [...this.state.addedPosts, post],
       [listName]: [...this.state[listName], post]
     });
-  }
-
-  calcPostAverageRate = (post) => {
-    const { comments } = post;
-
-    if (comments.length === 0) return 0;
-
-    const totalRate = comments.reduce((acc, comment) => {
-      return acc += comment.rate;
-    }, 0);
-
-    return totalRate / comments.length;
-  }
-
-  filterMaxAverageRatedPost = (posts) => {
-    let maxAverageRate = -Infinity;
-    let maxAverageRatedPost = null;
-
-    posts.forEach(post => {
-      const postAverageRate = this.calcPostAverageRate(post);
-
-      if (postAverageRate > maxAverageRate) {
-        maxAverageRate = postAverageRate;
-        maxAverageRatedPost = post;
-      }
-    })
-
-    return maxAverageRatedPost;
   }
 
   deletePost = (selectedPost, listName) => {
@@ -68,7 +75,7 @@ class PostRatingLists extends React.Component {
   }
 
   sortList = (listName, asc) => {
-    const newList = [...this.state[listName]].sort((a, b) => this.calcPostAverageRate(a) - this.calcPostAverageRate(b));
+    const newList = [...this.state[listName]].sort((a, b) => calcPostAverageRate(a) - calcPostAverageRate(b));
 
     if (asc) {
       newList.reverse();
@@ -80,30 +87,60 @@ class PostRatingLists extends React.Component {
     });
   }
 
+  updateCommentRate = (postId, ratedCommentData, newRate) => {
+    const newPool = [...this.state.pool];
+
+    newPool.forEach(post => {
+      if (post.id === postId) {
+        post.comments.forEach(comment => {
+          if (JSON.stringify(comment) === JSON.stringify(ratedCommentData.comment) && ratedCommentData.index === post.comments.indexOf(comment)) {
+            comment.rate = (comment.rate + newRate) / 2;
+          }
+        });
+      }
+    });
+
+    this.setState({
+      ...this.state,
+      pool: newPool
+    });
+  }
+
   render() {
     const { list1, list2 } = this.state;
 
     return (
-      <div className='container'>
-        <List 
-          list={list1} 
-          addPost={this.addPost} 
-          deletePost={this.deletePost} 
-          sortList={this.sortList} 
-          getPostAverageRate={this.calcPostAverageRate} 
-          listName="list1" 
+      <div className='app-container'>
+        <SearchBar 
+          pool={this.state.pool}
+          filterSearchedPosts={this.filterSearchedPosts}
+          clearSearchedPosts={this.clearSearchedPosts}
         />
-        <List 
-          list={list2} 
-          addPost={this.addPost} 
-          deletePost={this.deletePost} 
-          sortList={this.sortList} 
-          getPostAverageRate={this.calcPostAverageRate} 
-          listName="list2" 
+        <PostsBoard
+          pool={this.state.pool}
+          searchedPosts={this.state.searchedPosts}
+          addComment={this.addComment}
+          updateCommentRate={this.updateCommentRate}
         />
+        <div className='rating-container'>
+          <List 
+            list={list1} 
+            addPost={this.addPost} 
+            deletePost={this.deletePost} 
+            sortList={this.sortList} 
+            listName="list1" 
+          />
+          <List 
+            list={list2} 
+            addPost={this.addPost} 
+            deletePost={this.deletePost} 
+            sortList={this.sortList} 
+            listName="list2" 
+          />
+        </div>
       </div>
     )
   }
 }
 
-export default PostRatingLists;
+export default PostApp;
