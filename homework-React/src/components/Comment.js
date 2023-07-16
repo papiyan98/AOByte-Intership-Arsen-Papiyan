@@ -1,14 +1,6 @@
 import React from "react";
 
 class Comment extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isRated: false
-    };
-  }
-
   onRateBtnClick = (event) => {    
     let rate;
     const commentInfo = event.target.closest('[data-commentinfo]').dataset.commentinfo;
@@ -38,10 +30,7 @@ class Comment extends React.Component {
 
         rate = Array.from(tooltipElem.children).indexOf(child) + 1;
 
-        this.setState({
-          ...this.state,
-          isRated: true
-        });
+        this.props.comment.isRated = true;
       });
     });
 
@@ -61,7 +50,7 @@ class Comment extends React.Component {
     tooltipElem.style.top = top + 'px';
 
     tooltipElem.onpointerleave = () => {
-      if (this.state.isRated) {
+      if (this.props.comment.isRated) {
         setTimeout(() => {
           Array.from(anchorElem.children).forEach(child => {
             switch (child.tagName) {
@@ -76,10 +65,7 @@ class Comment extends React.Component {
             }
           });
 
-          this.setState({
-            ...this.state,
-            isRated: false
-          });
+          this.props.comment.isRated = true;
 
           this.props.updateCommentRate(this.props.postId, JSON.parse(commentInfo), rate)
 
