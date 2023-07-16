@@ -4,7 +4,7 @@ import { calcPostAverageRate } from "../helpers/calcPostAverageRate";
 class PostPreview extends React.Component {
   render() {
     return (
-      <div key={this.props.post.id} className='post-box'>
+      <div className='post-box'>
         <div className='post-preview'>
           <div className='post-info'>
             <span className='post-title-prev'>{this.props.post.title}</span>
