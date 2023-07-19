@@ -15,9 +15,11 @@ class CustomSelect extends Component {
   onChangeHandler = (event) => {    
     const selectedValue = event.target.value;
 
-    const selected = this.props.options.find(option => option.value === selectedValue);
+    const { onChange, options } = this.props;
 
-    this.props.onChange(selected);
+    const selected = options.find(option => option.value === selectedValue);
+
+    onChange(selected);
 
     this.setState({
       selectedOption: selected,
@@ -33,7 +35,6 @@ class CustomSelect extends Component {
     }
 
     this.setState({
-      ...this.state,
       isActive: !this.state.isActive
     });
   }

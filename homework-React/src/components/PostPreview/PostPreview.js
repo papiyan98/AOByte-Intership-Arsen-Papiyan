@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { calcPostAverageRate } from "../../helpers/index";
+import { finalAverageRateCalculation } from "../../helpers/index";
 
 import './styles.scss'
 
@@ -17,7 +17,7 @@ class PostPreview extends Component {
           </div>
           <span className='average-rate'>
             <img src='./star-icon.png' alt='Average rate' />
-            {parseFloat(+(calcPostAverageRate(post)).toPrecision(2))}
+            {finalAverageRateCalculation(post)}
           </span>
         </div>
         <button className='delete-btn' onClick={() => deletePost(post, listName)}>

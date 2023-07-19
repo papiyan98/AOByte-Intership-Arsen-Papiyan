@@ -14,9 +14,13 @@ class RatingList extends Component {
   }
 
   handleSortClick = () => {
-    this.props.sortList(this.props.listName, this.state.asc);
+    const { listName, sortList } = this.props;
+
+    sortList(listName, this.state.asc);
     
-    this.setState({ asc: !this.state.asc });
+    this.setState({ 
+      asc: !this.state.asc 
+    });
   }
 
   render() {

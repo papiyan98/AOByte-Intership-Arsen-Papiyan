@@ -23,21 +23,18 @@ class PostApp extends Component {
 
   clearSearchedPosts = () => {
     this.setState({
-      ...this.state,
       searchedPosts: []
     });
   }
 
   filterSearchedPosts = (post) => {
     this.setState({
-      ...this.state,
       searchedPosts: [...this.state.searchedPosts, post]
     });
   }
 
   updatePool = (newPool) => {
     this.setState({
-      ...this.state,
       pool: newPool
     })
   }
@@ -47,7 +44,6 @@ class PostApp extends Component {
       isReseted: true,
       searchedPosts: [],
       pool: structuredClone(this.props.pool)
-
     });
 
     disableAllButtons();

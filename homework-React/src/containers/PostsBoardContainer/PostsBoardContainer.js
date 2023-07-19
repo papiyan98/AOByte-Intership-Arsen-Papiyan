@@ -32,7 +32,9 @@ class PostsBoardContainer extends Component {
   }
 
   deleteComment = (comment, postId) => {
-    const newPool = [...this.props.pool];
+    const { pool, updatePool } = this.props;
+
+    const newPool = [...pool];
 
     newPool.forEach(post => {
       if (post.id === postId) {
@@ -42,11 +44,13 @@ class PostsBoardContainer extends Component {
       }
     });
 
-    this.props.updatePool(newPool);
+    updatePool(newPool);
   }
 
   deleteReply = (selectedReply, commentIndex, postId) => {
-    const newPool = [...this.props.pool];
+    const { pool, updatePool } = this.props;
+
+    const newPool = [...pool];
     
     newPool.forEach(post => {
       if (post.id === postId) {
@@ -58,11 +62,13 @@ class PostsBoardContainer extends Component {
       }
     });
 
-    this.props.updatePool(newPool);
+    updatePool(newPool);
   }
 
   updateCommentRate = (postId, ratedComment, newRate) => {
-    const newPool = [...this.props.pool];
+    const { pool, updatePool } = this.props;
+
+    const newPool = [...pool];
 
     newPool.forEach(post => {
       if (post.id === postId) {
@@ -78,11 +84,13 @@ class PostsBoardContainer extends Component {
       }
     });
 
-    this.props.updatePool(newPool);
+    updatePool(newPool);
   }
 
   updateCommentReplyRate = (postId, commentIndex, ratedReply, newRate) => {
-    const newPool = [...this.props.pool];
+    const { pool, updatePool } = this.props;
+
+    const newPool = [...pool];
     
     newPool.forEach(post => {
       if (post.id === postId) {
@@ -98,7 +106,7 @@ class PostsBoardContainer extends Component {
       }
     });
 
-    this.props.updatePool(newPool);
+    updatePool(newPool);
   }
 
   render() {

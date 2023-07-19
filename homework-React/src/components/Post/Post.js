@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 
+import CustomSelect from "../CustomSelect/CustomSelect";
 import CommentForm from "../CommentForm/CommentForm";
 import Comment from "../Comment/Comment";
 
+import { selectOptions } from "../../constants";
+
 import './styles.scss';
-import CustomSelect from "../CustomSelect/CustomSelect";
 
 class Post extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       comments: [...this.props.post.comments].sort((a, b) => b.rate - a.rate),
       isCommentsVisible: false
@@ -31,7 +33,6 @@ class Post extends Component {
         sortedComments.sort((a, b) => a.date - b.date);
 
         this.setState({
-          ...this.state,
           comments: sortedComments
         });
 
@@ -40,7 +41,6 @@ class Post extends Component {
         sortedComments.sort((a, b) => b.date - a.date);
 
         this.setState({
-          ...this.state,
           comments: sortedComments
         });
 
@@ -49,7 +49,6 @@ class Post extends Component {
         sortedComments.sort((a, b) => b.rate - a.rate);
 
         this.setState({
-          ...this.state,
           comments: sortedComments
         });
 
@@ -58,24 +57,29 @@ class Post extends Component {
   }
 
   addCommentTrigger = (comment, postId) => {
-    this.props.addComment(comment, postId);
+    const { post, addComment } = this.props;
+
+    addComment(comment, postId);
 
     this.setState({
-      ...this.state,
-      comments: [...this.props.post.comments].sort((a, b) => b.rate - a.rate)
+      comments: [...post.comments].sort((a, b) => b.rate - a.rate)
+    });
+  }
+
+  deleteCommentTrigger = (comment, postId) => {
+    const { post, deleteComment } = this.props;
+
+    deleteComment(comment, postId);
+
+    this.setState({
+      comments: [...post.comments].sort((a, b) => b.rate - a.rate)
     });
   }
 
   render() {
-    const { post, updateCommentRate, addReply, deleteComment, deleteReply, updateCommentReplyRate } = this.props;
+    const { post, updateCommentRate, addReply, deleteReply, updateCommentReplyRate } = this.props;
     const { comments, isCommentsVisible } = this.state;
-    
-    const selectOptions = [
-      { value: "byRate", label: "Most Rated" },
-      { value: "oldest", label: "Oldest" },
-      { value: "newest", label: "Newest" }
-    ];
-    
+
     return (
       <div className="post">
         <fieldset className="post-info">
@@ -105,7 +109,7 @@ class Post extends Component {
                 postId={post.id}
                 addReply={addReply}
                 deleteReply={deleteReply}
-                deleteComment={deleteComment}
+                deleteComment={(comment, id) => this.deleteCommentTrigger(comment, id)}
                 updateCommentRate={updateCommentRate}
                 updateCommentReplyRate={updateCommentReplyRate}
               />
@@ -113,7 +117,6 @@ class Post extends Component {
             <CommentForm 
               post={post}
               addComment={(comment, id) => this.addCommentTrigger(comment, id)}
-              deleteComment={deleteComment}
             />
           </div>
         )}

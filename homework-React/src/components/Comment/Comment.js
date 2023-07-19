@@ -18,42 +18,46 @@ class Comment extends Component {
   }
 
   onTooltipHide = (newRate) => {
+    const { postId, comment, updateCommentRate } = this.props;
+
     if (isNaN(newRate)) {
       return;
     }
 
-    this.props.updateCommentRate(this.props.postId, this.props.comment, +newRate);
+    updateCommentRate(postId, comment, +newRate);
     
     this.setState({
-      ...this.state,
       isRated: true
     });
   }
 
   onCommentReply = (reply, comment, postId) => {
+    const { addReply } = this.props;
+
     this.setState({
-      ...this.state,
       isReplied: true
     });
 
-    this.props.addReply(reply, comment, postId);
+    addReply(reply, comment, postId);
   }
 
   onReplyBtnClickHandler = () => {
     this.setState({
-      ...this.state,
       showReplies: !this.state.showReplies
     });
   }
 
   onDeleteBtnClickHandler = () => {
-    this.props.deleteComment(this.props.comment, this.props.postId);
+    const { comment, postId, deleteComment } = this.props;
+    // console.log(comment, postId, deleteComment);
+
+    deleteComment(comment, postId);
   }
 
   render() {
     const { comment, commentIndex, postId, updateCommentReplyRate, deleteReply } = this.props;
     const { isRated, showReplies } = this.state;
-
+    
     return (
       <div className="comment">
         <div className="comment-info">

@@ -14,15 +14,19 @@ class CommentReply extends Component {
   }
 
   onTooltipHide = (newRate) => {
+    const { postId, commentIndex, reply, updateCommentReplyRate } = this.props;
+
     this.setState({
       isRated: true
     });
 
-    this.props.updateCommentReplyRate(this.props.postId, this.props.commentIndex, this.props.reply, +newRate);
+    updateCommentReplyRate(postId, commentIndex, reply, +newRate);
   }
 
   onDeleteBtnClickHandler = () => {
-    this.props.deleteReply(this.props.reply, this.props.commentIndex, this.props.postId);
+    const { reply, commentIndex, postId, deleteReply } = this.props;
+
+    deleteReply(reply, commentIndex, postId);
   }
 
   render() {
@@ -30,7 +34,7 @@ class CommentReply extends Component {
     const { reply } = this.props;
     
     return (
-      <div className="repliedComment">
+      <div className="replied-comment">
         <div className="commentor-avatar">
           <img src="./user-icon.png" alt="User" />
         </div>

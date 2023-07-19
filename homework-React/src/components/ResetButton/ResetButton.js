@@ -6,7 +6,9 @@ import './styles.scss'
 
 class ResetButton extends Component {
   onClickHandler = () => {
-    this.props.resetApp();
+    const { resetApp } = this.props;
+
+    resetApp();
   }
 
   render() {

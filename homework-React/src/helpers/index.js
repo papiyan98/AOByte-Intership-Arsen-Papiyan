@@ -42,3 +42,7 @@ export const disableAllButtons = () => {
     });
   });
 }
+
+export const finalAverageRateCalculation = (post) => {
+  parseFloat(+(calcPostAverageRate(post)).toPrecision(2));
+}

@@ -6,19 +6,21 @@ class SearchBar extends Component {
   onSubmitHandler = (event) => {
     event.preventDefault();
 
+    const { pool, searchedPosts, filterSearchedPosts, clearSearchedPosts } = this.props;
+
     const searchedComment = event.target.value;
 
     if (!searchedComment) {
-      this.props.clearSearchedPosts();
+      clearSearchedPosts();
 
       return;
     }
 
-    this.props.pool.forEach(post => {
+    pool.forEach(post => {
       post.comments.forEach(comment => {
         if (comment.text.toLowerCase().includes(searchedComment.toLowerCase())) {
-          if (!this.props.searchedPosts.includes(post)) {
-            this.props.filterSearchedPosts(post);
+          if (!searchedPosts.includes(post)) {
+            filterSearchedPosts(post);
           }
         } 
       });
