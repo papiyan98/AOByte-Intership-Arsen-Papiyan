@@ -1,0 +1,52 @@
+@import '../../styles/colors.scss';
+
+.column {
+  position: relative;
+  width: 370px;
+  min-height: 430px;
+  border: 2px solid $primary-color;
+  border-radius: 5px;
+
+  .sort-btn {
+    float: left;
+    padding: 5px 10px;
+    margin: 10px;
+    width: 60px;
+    height: 40px;
+    border: none;
+    border-radius: 3px;
+    background-color: $button-background;
+    cursor: pointer;
+
+    img {
+      width: 20px
+    }
+  }
+
+  .add-btn {
+    float: right;
+    margin: 10px;
+    width: 60px;
+    height: 40px;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    background-color: $button-background;
+    cursor: pointer;
+
+    img {
+      width: 30px
+    }
+  }
+
+  .list {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+  }
+}

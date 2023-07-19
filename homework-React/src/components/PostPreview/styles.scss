@@ -1,0 +1,71 @@
+@import '../../styles/colors.scss';
+
+.post-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: 5px 15px;
+  transform: translateY(-150%);
+  animation: ani 1s forwards;
+  border: 2px solid $primary-color;
+  opacity: 0;
+
+  @keyframes ani {
+    0% {
+      transform: translateY(-150%);
+      opacity: 0;
+    }  100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .post-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5px 10px;
+    padding: 5px 10px;
+    width: 100%;
+    height: 30px;
+
+    .post-info {
+      display: flex;
+      flex-direction: column;
+
+      .post-title-prev {
+        font-weight: 700;
+      }
+
+      .description {
+        font-size: 0.6rem;
+      }
+    }
+
+    .average-rate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 15px;
+      }
+    }
+  }
+
+  .delete-btn {
+    margin: 10px;
+    // width: 60px;
+    // height: 40px;
+    border: none;
+    border-radius: 50px;
+    padding: 5px 10px;
+    background-color: inherit;
+    cursor: pointer;
+
+    img {
+      width: 30px;
+    }
+  }
+}
