@@ -6,22 +6,45 @@ class Pagination extends Component {
   constructor(props) {
     super(props);
 
+    this.totalPages = Math.ceil(this.props.data.length / this.props.itemsPerPage);
+
     this.state = {
       currentPage: 1
     };
   }
 
-  onClickHandler = (page) => {
+  onPageNumberClickHandler = (page) => {
     this.setState({
       currentPage: page
     });
+  }
+
+  onArrowClickHandler = (event) => {
+    const { currentPage } = this.state;
+
+    const id = event.target.closest('button').getAttribute('id');
+
+    if (id === "prev" && currentPage > 1) {
+      this.setState({ 
+        currentPage: currentPage - 1 
+      });
+
+      return;
+    }
+
+    if (id === "next" && currentPage < this.totalPages) {
+      this.setState({
+        currentPage: currentPage + 1
+      });
+
+      return;
+    }
   }
 
   render() {
     const { data, itemsPerPage } = this.props;
     const { currentPage } = this.state;
 
-    const totalPages = Math.ceil(data.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
@@ -37,15 +60,21 @@ class Pagination extends Component {
           ))}
         </ul>
         <div className="pagination-controls">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button className="pagination-arrow-btn" id="prev" onClick={(event) => this.onArrowClickHandler(event)}>
+            <img src="./images/arrow-left.png" alt="" />
+          </button>
+          {Array.from({ length: this.totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
               className={`pagination-btn${currentPage === page ? ' active' : ''}`}
-              onClick={() => this.onClickHandler(page)}
+              onClick={() => this.onPageNumberClickHandler(page)}
             >
               {page}
             </button>
           ))}
+          <button className="pagination-arrow-btn" id="next" onClick={(event) => this.onArrowClickHandler(event)}>
+            <img src="./images/arrow-right.png" alt="" />
+          </button>
         </div>
       </div>
     )
