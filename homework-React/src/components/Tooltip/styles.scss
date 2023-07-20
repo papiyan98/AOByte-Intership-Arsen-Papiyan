@@ -1,3 +1,5 @@
+@import '../../styles/colors.scss';
+
 .tooltip-container {
   position: relative;
 
@@ -13,7 +15,7 @@
   
     width: 100px;
     height: 30px;
-    background: #eee;
+    background: $button-background;
     padding: 10px 20px;
   
     border: none;

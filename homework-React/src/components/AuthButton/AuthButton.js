@@ -13,7 +13,7 @@ class AuthButton extends Component {
         <Button 
           text={"Login"}
           classname={"login"}
-          imgSrc={"./login-icon.png"}
+          imgSrc={"./images/login-icon.png"}
           onClickHandler={this.onClickHandler}
         />
       </div>

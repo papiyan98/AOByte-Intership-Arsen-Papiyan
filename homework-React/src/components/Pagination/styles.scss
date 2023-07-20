@@ -1,0 +1,35 @@
+@import '../../styles/colors.scss';
+
+.pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .pagination-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .pagination-item {
+      margin-bottom: 20px;
+    }
+  }
+
+  .pagination-controls {
+    margin-top: 10px;
+
+    .pagination-btn {
+      padding: 5px 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      color: $background-color;
+      background-color: $accent-color;
+      cursor: pointer;
+
+      &:active {
+        background-color: #138ea1;
+      }
+    }
+  }
+}

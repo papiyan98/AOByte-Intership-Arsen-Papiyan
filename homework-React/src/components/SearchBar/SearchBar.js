@@ -36,7 +36,9 @@ class SearchBar extends Component {
       <div className="search-box">
         <form className="search-bar" name="searchForm" onInput={(event) => this.onSubmitHandler(event)} onBlur={() => this.focusBlurHandler()} onFocus={() => this.focusBlurHandler()} onSubmit={(event) => event.preventDefault()}>
           <input type="search" name="searchInput" placeholder="Search by comment..." autoComplete="off" />
-          <button type="submit"><img src="./search-icon.png" alt="Search" /></button>
+          <button type="submit">
+            <img src="./images/search-icon.png" alt="Search" />
+          </button>
         </form>
       </div>
     )

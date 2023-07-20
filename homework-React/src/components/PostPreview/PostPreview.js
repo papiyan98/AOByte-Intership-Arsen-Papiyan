@@ -16,12 +16,12 @@ class PostPreview extends Component {
             <span className='description'>{(post.description).slice(0, 30)}...</span>
           </div>
           <span className='average-rate'>
-            <img src='./star-icon.png' alt='Average rate' />
+            <img src='./images/star-icon.png' alt='Average rate' />
             {finalAverageRateCalculation(post)}
           </span>
         </div>
         <button className='delete-btn' onClick={() => deletePost(post, listName)}>
-          <img src="./delete-icon.png" alt="Delete" />
+          <img src="./images/delete-icon.png" alt="Delete" />
         </button>
       </div>
     )

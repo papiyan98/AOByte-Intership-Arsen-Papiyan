@@ -29,10 +29,10 @@ class RatingList extends Component {
     return (
       <div className='column'>
         <button className='sort-btn' onClick={() => this.handleSortClick()}>
-          <img src='./sort-icon.png' alt='Sort' />
+          <img src='./images/sort-icon.png' alt='Sort' />
         </button>
         <button className='add-btn' onClick={() => addPost(listName)}>
-          <img src='./plus-icon.png' alt="Add" />
+          <img src='./images/plus-icon.png' alt="Add" />
         </button>
         <div className='list'>
           {list.map(post => (

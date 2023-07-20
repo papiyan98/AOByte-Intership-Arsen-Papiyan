@@ -88,7 +88,7 @@ class Post extends Component {
         </fieldset>
         <div className="post-btns">
           <button className="comments-btn" onClick={() => this.onCommentBtnClickHandler()}>
-            <img src="./comment-icon.png" alt="Comment" />
+            <img src="./images/comment-icon.png" alt="Comment" />
             <span>{post.comments.length}</span>
           </button>
           {isCommentsVisible && (

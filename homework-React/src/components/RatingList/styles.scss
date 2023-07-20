@@ -3,6 +3,7 @@
 .column {
   position: relative;
   width: 370px;
+  overflow: auto;
   min-height: 430px;
   border: 2px solid $primary-color;
   border-radius: 5px;
@@ -48,5 +49,18 @@
     flex-direction: column;
     margin-top: 10px;
     gap: 10px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $button-background;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #cacaca;
   }
 }

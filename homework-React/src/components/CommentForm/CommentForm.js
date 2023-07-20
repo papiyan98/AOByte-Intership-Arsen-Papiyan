@@ -39,7 +39,9 @@ class CommentForm extends Component {
     return (
       <form className={!small ? "addComment-form" : "addReply-form"} onSubmit={(event) => this.onFormSubmitHandler(event)}>
         <input className="text-input" type="text" name="textInput" placeholder="Your comment..." autoComplete="off" />
-        <button className="send-btn" type="submit"><img src="./send-icon.png" alt="Send" /></button>
+        <button className="send-btn" type="submit">
+          <img src="./images/send-icon.png" alt="Send" />
+        </button>
       </form>
     )
   }

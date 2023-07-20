@@ -17,7 +17,7 @@ class ResetButton extends Component {
         <Button 
           text={"Reset"}
           classname={"reset"}
-          imgSrc={"./reset-icon.png"}
+          imgSrc={"./images/reset-icon.png"}
           onClickHandler={this.onClickHandler}
         />
       </div>

@@ -8,9 +8,9 @@ class TooltipBody extends Component {
 
     for (let i = 0; i < rateImages.length; i++) {
       if (i <= ratedStarIndex) {
-        rateImages[i].setAttribute("src", "./star-icon.png")
+        rateImages[i].setAttribute("src", "./images/star-icon.png")
       } else {
-        rateImages[i].setAttribute("src", "./rate-icon.png")
+        rateImages[i].setAttribute("src", "./images/rate-icon.png")
       }
     }
 
@@ -20,11 +20,11 @@ class TooltipBody extends Component {
   render() {
     return (
       <>
-        <img className="rate-count" src="./rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
-        <img className="rate-count" src="./rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
-        <img className="rate-count" src="./rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
-        <img className="rate-count" src="./rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
-        <img className="rate-count" src="./rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
+        <img className="rate-count" src="./images/rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
+        <img className="rate-count" src="./images/rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
+        <img className="rate-count" src="./images/rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
+        <img className="rate-count" src="./images/rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
+        <img className="rate-count" src="./images/rate-icon.png" alt="Rate" onClick={(event) => this.onRateClickHandler(event)} />
       </>
     )
   }
