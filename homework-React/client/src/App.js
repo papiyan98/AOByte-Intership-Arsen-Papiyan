@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import HeaderContainer from './containers/HeaderContainer/HeaderContainer';
 import PostsBoardContainer from './containers/PostsBoardContainer/PostsBoardContainer';
 import RatingListContainer from './containers/RatingListContainer/RatingListContainer';
 
-import { disableAllButtons } from './helpers';
+import { asyncData, disableAllButtons } from './helpers';
 
 import './App.scss';
 
-const PostApp = ({ data }) => {
-  const [isReseted, setIsReseted] = useState(false);
+const PostApp = () => {
+  const [pool, setPool] = useState([]);
   const [searchedPosts, setSearchedPosts] = useState([]);
-  const [pool, setPool] = useState(structuredClone(data));
+  const [isReseted, setIsReseted] = useState(false);
+
+  useEffect(() => {
+    const dataPromise = asyncData();
+    dataPromise.then(({ postsData }) => {
+      setPool(postsData);
+    })
+  }, [isReseted]);
 
   const clearSearchedPosts = () => {
     setSearchedPosts([]);
@@ -26,12 +33,10 @@ const PostApp = ({ data }) => {
   }
 
   const resetApp = () => {
-    setIsReseted(true);
     setSearchedPosts([]);
-    setPool(structuredClone(data));
+    setIsReseted(!isReseted);
 
     disableAllButtons();
-
     clearSearchedPosts();
   }
 

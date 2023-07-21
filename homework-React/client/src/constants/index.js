@@ -3,3 +3,5 @@ export const selectOptions = [
   { value: "oldest", label: "Oldest" },
   { value: "newest", label: "Newest" }
 ];
+
+export const origin = new URL('http://localhost:3000/');

@@ -1,3 +1,5 @@
+import { origin } from "../constants";
+
 export const calcPostAverageRate = (post) => {
   const { comments } = post;
 
@@ -7,7 +9,6 @@ export const calcPostAverageRate = (post) => {
     return acc += comment.rate;
   }, 0);
 
-  // console.log(post);
   return totalRate / comments.length;
 }
 
@@ -27,12 +28,12 @@ export const filterMaxAverageRatedPost = (posts) => {
   return maxAverageRatedPost;
 }
 
-export const disableAllButtons = () => {
+export const disableAllButtons = () => { 
   document.querySelectorAll('.rate-btn').forEach(button => {
     Array.from(button.children).forEach(child => {
       switch (child.tagName) {
         case 'IMG':
-          child.src = "./rate-icon.png";
+          child.src = new URL(origin + '/images/rate-icon.png');
           break;
         case 'SPAN':
           child.innerHTML = "Rate"
@@ -46,4 +47,12 @@ export const disableAllButtons = () => {
 
 export const finalAverageRateCalculation = (post) => {
   return parseFloat(+(calcPostAverageRate(post)).toPrecision(2));
+}
+
+export const asyncData = async () => {
+  const response = await fetch("/api/data");
+  
+  const data = await response.json();
+
+  return data;
 }
