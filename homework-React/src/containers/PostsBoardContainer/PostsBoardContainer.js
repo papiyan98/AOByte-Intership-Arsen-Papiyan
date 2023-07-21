@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 
 import PostsBoard from "../../components/PostsBoard/PostsBoard";
 
 import './styles.scss';
 
-class PostsBoardContainer extends Component {
-  addComment = (comment, id) => {
-    const newPool = [...this.props.pool];
+const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => {
+  const addComment = (comment, id) => {
+    const newPool = [...pool];
     
     newPool.forEach(post => {
       if (post.id === id) {
@@ -14,11 +14,11 @@ class PostsBoardContainer extends Component {
       }
     });
 
-    this.props.updatePool(newPool);
+    updatePool(newPool);
   }
 
-  addReply = (reply, comment, postId) => {
-    const newPool = [...this.props.pool];
+  const addReply = (reply, comment, postId) => {
+    const newPool = [...pool];
 
     newPool.forEach(post => {
       if (post.id === postId) {
@@ -28,12 +28,10 @@ class PostsBoardContainer extends Component {
       }
     });
 
-    this.props.updatePool(newPool);
+    updatePool(newPool);
   }
 
-  deleteComment = (comment, postId) => {
-    const { pool, updatePool } = this.props;
-
+  const deleteComment = (comment, postId) => {
     const newPool = [...pool];
 
     newPool.forEach(post => {
@@ -47,9 +45,7 @@ class PostsBoardContainer extends Component {
     updatePool(newPool);
   }
 
-  deleteReply = (selectedReply, commentIndex, postId) => {
-    const { pool, updatePool } = this.props;
-
+  const deleteReply = (selectedReply, commentIndex, postId) => {
     const newPool = [...pool];
     
     newPool.forEach(post => {
@@ -65,9 +61,7 @@ class PostsBoardContainer extends Component {
     updatePool(newPool);
   }
 
-  updateCommentRate = (postId, ratedComment, newRate) => {
-    const { pool, updatePool } = this.props;
-
+  const updateCommentRate = (postId, ratedComment, newRate) => {
     const newPool = [...pool];
 
     newPool.forEach(post => {
@@ -87,9 +81,7 @@ class PostsBoardContainer extends Component {
     updatePool(newPool);
   }
 
-  updateCommentReplyRate = (postId, commentIndex, ratedReply, newRate) => {
-    const { pool, updatePool } = this.props;
-
+  const updateCommentReplyRate = (postId, commentIndex, ratedReply, newRate) => {
     const newPool = [...pool];
     
     newPool.forEach(post => {
@@ -109,25 +101,21 @@ class PostsBoardContainer extends Component {
     updatePool(newPool);
   }
 
-  render() {
-    const { pool, isReseted, searchedPosts } = this.props;
-
-    return (
-      <div className="post-board-container">
-        <PostsBoard 
-          pool={pool}
-          isReseted={isReseted}
-          searchedPosts={searchedPosts}
-          addComment={this.addComment}
-          addReply={this.addReply}
-          deleteReply={this.deleteReply}
-          deleteComment={this.deleteComment}
-          updateCommentRate={this.updateCommentRate}
-          updateCommentReplyRate={this.updateCommentReplyRate}
-        />
-      </div>
-    )
-  }
+  return (
+    <div className="post-board-container">
+      <PostsBoard 
+        pool={pool}
+        isReseted={isReseted}
+        searchedPosts={searchedPosts}
+        addComment={addComment}
+        addReply={addReply}
+        deleteReply={deleteReply}
+        deleteComment={deleteComment}
+        updateCommentRate={updateCommentRate}
+        updateCommentReplyRate={updateCommentReplyRate}
+      />
+    </div>
+  )
 }
 
 export default PostsBoardContainer;

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import RatingList from "../../components/RatingList/RatingList";
 
@@ -6,19 +6,13 @@ import { filterMaxAverageRatedPost, calcPostAverageRate } from "../../helpers/in
 
 import './styles.scss'
 
-class RatingListContainer extends Component {
-  constructor(props) {
-    super(props);
+const RatingListContainer = ({ pool }) => {
+  const [leftList, setLeftList] = useState([]);
+  const [rightList, setRightList] = useState([]);
+  const [addedPosts, setAddedPosts] = useState([]);
 
-    this.state = {
-      list_1: [],
-      list_2: [],
-      addedPosts: []
-    };
-  }
-
-  addPost = (listName) => {
-    const unaddedPosts = this.props.pool.filter(post => !this.state.addedPosts.includes(post));
+  const addPost = (listId) => {
+    const unaddedPosts = pool.filter(post => !addedPosts.includes(post));
 
     if (!unaddedPosts.length) {
       return;
@@ -26,60 +20,80 @@ class RatingListContainer extends Component {
 
     const post = filterMaxAverageRatedPost(unaddedPosts);
     
-    this.setState({
-      ...this.state,
-      addedPosts: [...this.state.addedPosts, post],
-      [listName]: [...this.state[listName], post]
-    });
-  }
-
-  deletePost = (selectedPost, listName) => {
-    const newList = this.state[listName].filter(post => !(post === selectedPost));
+    setAddedPosts([...addedPosts, post]);
     
-    const newaddedPosts = this.state.addedPosts.filter(post => !(post === selectedPost));
-
-    this.setState({
-      ...this.state,
-      'addedPosts': newaddedPosts,
-      [listName]: newList
-    });
+    switch (listId) {
+      case 1:
+        setLeftList([...leftList, post]);
+        break;
+      case 2:
+        setRightList([...rightList, post]);
+        break;
+      default:
+        break;
+    }
   }
 
-  sortList = (listName, asc) => {
-    const newList = [...this.state[listName]].sort((a, b) => calcPostAverageRate(a) - calcPostAverageRate(b));
+  const deletePost = (selectedPost, listId) => {
+    const list = listId === 1 ? leftList : rightList;
+
+    const newList = list.filter(post => !(post === selectedPost));
+    
+    const newAddedPosts = addedPosts.filter(post => !(post === selectedPost));
+
+    setAddedPosts(newAddedPosts);
+    
+    switch (listId) {
+      case 1:
+        setLeftList(newList);
+        break;
+      case 2:
+        setRightList(newList);
+        break;
+      default:
+        break;
+    }
+  }
+
+  const sortList = (listId, asc) => {
+    const list = listId === 1 ? leftList : rightList;
+
+    const newList = [...list].sort((a, b) => calcPostAverageRate(a) - calcPostAverageRate(b));
     
     if (asc) {
       newList.reverse();
     }
 
-    this.setState({
-      ...this.state,
-      [listName]: newList,
-    });
+    switch (listId) {
+      case 1:
+        setLeftList(newList);
+        break;
+      case 2:
+        setRightList(newList);
+        break;
+      default:
+        break;
+    }
   }
 
-  render() {
-    const { list_1, list_2 } = this.state;
-
-    return (
-      <div className='rating-container'>
-        <RatingList 
-          list={list_1} 
-          addPost={this.addPost} 
-          deletePost={this.deletePost} 
-          sortList={this.sortList} 
-          listName="list_1" 
-        />
-        <RatingList 
-          list={list_2} 
-          addPost={this.addPost} 
-          deletePost={this.deletePost} 
-          sortList={this.sortList} 
-          listName="list_2" 
-        />
-      </div>
-    )
-  }
+  return (
+    <div className='rating-container'>
+      <RatingList
+        listId={1} 
+        list={leftList} 
+        addPost={addPost} 
+        deletePost={deletePost} 
+        sortList={sortList} 
+      />
+      <RatingList
+        listId={2}
+        list={rightList} 
+        addPost={addPost} 
+        deletePost={deletePost} 
+        sortList={sortList} 
+      />
+    </div>
+  )
 }
 
 export default RatingListContainer;

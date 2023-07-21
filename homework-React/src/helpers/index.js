@@ -7,6 +7,7 @@ export const calcPostAverageRate = (post) => {
     return acc += comment.rate;
   }, 0);
 
+  // console.log(post);
   return totalRate / comments.length;
 }
 
@@ -44,5 +45,5 @@ export const disableAllButtons = () => {
 }
 
 export const finalAverageRateCalculation = (post) => {
-  parseFloat(+(calcPostAverageRate(post)).toPrecision(2));
+  return parseFloat(+(calcPostAverageRate(post)).toPrecision(2));
 }

@@ -1,0 +1,59 @@
+@import '../../styles/colors.scss';
+
+.pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .pagination-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .pagination-item {
+      margin-bottom: 20px;
+    }
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+
+    .pagination-arrow-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 50%;
+      background: $button-background;
+      cursor: pointer;
+
+      img {
+        width: 20px;
+      }
+
+      &:active {
+        background-color: #cacacc;
+      }
+    }
+
+    .pagination-btn {
+      width: 30px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      color: $background-color;
+      background-color: $accent-color;
+      cursor: pointer;
+
+      &:active {
+        background-color: #138ea1;
+      }
+    }
+  }
+}

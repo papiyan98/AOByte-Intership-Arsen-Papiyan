@@ -1,51 +1,36 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import TooltipBody from "./TooltipBody";
 
 import './styles.scss'
 
-class Tooltip extends Component {
-  constructor(props) {
-    super(props);
+const Tooltip = ({ replyTooltip, children, onTooltipHide }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
 
-    this.state = {
-      showTooltip: false
-    };
+  const onClickHandler = () => {
+    setShowTooltip(true);
   }
 
-  onClickHandler = () => {
-    this.setState({
-      showTooltip: true
-    });
-  }
-
-  onPointerLeaveHandler = (event) => {
-    this.props.onTooltipHide(event.target.dataset.rate);
+  const onPointerLeaveHandler = (event) => {
+    onTooltipHide(event.target.dataset.rate);
 
     setTimeout(() => {
-      this.setState({
-        showTooltip: false
-      });
+      setShowTooltip(false);
     }, 300);
   }
 
-  render() {
-    const { showTooltip } = this.state;
-    const { children, replyTooltip } = this.props;
-
-    return (
-      <div className="tooltip-container">
-        <div className="tooltip-trigger" onClick={() => this.onClickHandler()}>
-          {children}
-        </div>
-        {showTooltip && (
-          <div className={!replyTooltip ? "tooltip" : "tooltip shifted"} onPointerLeave={(event) => this.onPointerLeaveHandler(event)} data-rate>
-            <TooltipBody />
-          </div>
-        )}
+  return (
+    <div className="tooltip-container">
+      <div className="tooltip-trigger" onClick={onClickHandler}>
+        {children}
       </div>
-    )
-  }
+      {showTooltip && (
+        <div className={!replyTooltip ? "tooltip" : "tooltip shifted"} onPointerLeave={onPointerLeaveHandler} data-rate>
+          <TooltipBody />
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Tooltip;

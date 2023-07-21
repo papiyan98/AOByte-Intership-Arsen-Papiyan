@@ -5,10 +5,10 @@ import './index.css';
 
 import PostApp from './App';
 
-import { pool } from './data';
+import { postsData } from './data';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <PostApp pool={pool} />
+  <PostApp data={postsData} />
 );
