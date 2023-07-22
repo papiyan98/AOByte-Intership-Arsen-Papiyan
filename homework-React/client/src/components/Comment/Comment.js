@@ -6,8 +6,7 @@ import Tooltip from "../Tooltip/Tooltip";
 
 import './styles.scss';
 
-const Comment = ({ comment, commentIndex, postId, deleteComment, addReply, deleteReply, updateCommentRate, updateCommentReplyRate }) => {
-  const [isRated, setIsRated] = useState(false);
+const Comment = ({ comment, postId, deleteComment, addReply, deleteReply, updateCommentRate, updateCommentReplyRate }) => {
   const [showReplies, setShowReplies] = useState(false);
 
   const onTooltipHide = (newRate) => {
@@ -16,12 +15,6 @@ const Comment = ({ comment, commentIndex, postId, deleteComment, addReply, delet
     }
 
     updateCommentRate(postId, comment, +newRate);
-    
-    setIsRated(true);
-  }
-
-  const onCommentReply = (reply, comment, postId) => {
-    addReply(reply, comment, postId);
   }
 
   const onReplyBtnClickHandler = () => {
@@ -50,8 +43,8 @@ const Comment = ({ comment, commentIndex, postId, deleteComment, addReply, delet
           <div className="comment-btns">
             <Tooltip onTooltipHide={onTooltipHide}>
               <button className="rate-btn">
-                <img src={isRated ? './images/star-icon.png' : './images/rate-icon.png'} alt="Like" />
-                <span>{isRated ? 'Rated' : 'Rate'}</span>
+                <img src={comment.isRated ? './images/star-icon.png' : './images/rate-icon.png'} alt="Like" />
+                <span>{comment.isRated ? 'Rated' : 'Rate'}</span>
               </button>
             </Tooltip>
             <button className="reply-btn" onClick={onReplyBtnClickHandler}>
@@ -75,7 +68,6 @@ const Comment = ({ comment, commentIndex, postId, deleteComment, addReply, delet
               key={comment.replies.indexOf(reply)} 
               reply={reply} 
               comment={comment}
-              commentIndex={commentIndex}
               postId={postId}
               deleteReply={deleteReply}
               updateCommentReplyRate={updateCommentReplyRate}
@@ -85,7 +77,7 @@ const Comment = ({ comment, commentIndex, postId, deleteComment, addReply, delet
             small={true}
             comment={comment}
             postId={postId}
-            onCommentReply={onCommentReply}
+            addReply={addReply}
           />
         </div>
       )}

@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Tooltip from "../Tooltip/Tooltip";
 
 import './styles.scss';
 
-const CommentReply = ({ reply, commentIndex, postId, deleteReply, updateCommentReplyRate }) => {
-  const [isRated, setIsRated] = useState(false);
-
+const CommentReply = ({ reply, comment, postId, deleteReply, updateCommentReplyRate }) => {
   const onTooltipHide = (newRate) => {
-    setIsRated(true);
-
-    updateCommentReplyRate(postId, commentIndex, reply, +newRate);
+    updateCommentReplyRate(postId, comment, reply, +newRate);
   }
 
   const onDeleteBtnClickHandler = () => {
-    deleteReply(reply, commentIndex, postId);
+    deleteReply(reply, comment, postId);
   }
 
   return (
@@ -34,8 +30,8 @@ const CommentReply = ({ reply, commentIndex, postId, deleteReply, updateCommentR
         <div className="reply-btns">
           <Tooltip onTooltipHide={onTooltipHide} replyTooltip={true} >
             <button className="reply-rate-btn">
-              <img src={isRated ? './images/star-icon.png' : './images/rate-icon.png'} alt="Like" />
-              <span>{isRated ? 'Rated' : 'Rate'}</span>
+              <img src={reply.isRated ? './images/star-icon.png' : './images/rate-icon.png'} alt="Like" />
+              <span>{reply.isRated ? 'Rated' : 'Rate'}</span>
             </button>
           </Tooltip>
           {reply.isDeletable && (

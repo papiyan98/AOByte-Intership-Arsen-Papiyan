@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { cloneDeep } from "lodash";
 
 import CustomSelect from "../CustomSelect/CustomSelect";
 import CommentForm from "../CommentForm/CommentForm";
@@ -9,15 +10,21 @@ import { selectOptions } from "../../constants";
 import './styles.scss';
 
 const Post = ({ post, addComment, deleteComment, updateCommentRate, addReply, deleteReply, updateCommentReplyRate }) => {
-  const [comments, setComments] = useState([...post.comments].sort((a, b) => b.rate - a.rate));
+  const [comments, setComments] = useState([]);
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+
+  useEffect(() => {
+    const sortedComments = cloneDeep(post.comments).sort((a, b) => b.rate - a.rate);
+    
+    setComments(sortedComments);
+  }, [post.comments]);
 
   const onCommentBtnClickHandler = () => {
     setIsCommentsVisible(!isCommentsVisible);
   }
 
   const onSelectChangeHandler = (selectedOption) => {
-    const sortedComments = [...comments];
+    const sortedComments = cloneDeep(post.comments);
     const order = selectedOption.value;
     
     switch (order) {
@@ -38,13 +45,13 @@ const Post = ({ post, addComment, deleteComment, updateCommentRate, addReply, de
   const addCommentTrigger = (comment, postId) => {
     addComment(comment, postId);
 
-    setComments([...post.comments].sort((a, b) => b.rate - a.rate));
+    setComments(cloneDeep(post.comments).sort((a, b) => b.rate - a.rate));
   }
 
   const deleteCommentTrigger = (comment, postId) => {
     deleteComment(comment, postId);
 
-    setComments([...post.comments].sort((a, b) => b.rate - a.rate));
+    setComments(cloneDeep(post.comments).sort((a, b) => b.rate - a.rate));
   }
 
   return (
@@ -68,11 +75,10 @@ const Post = ({ post, addComment, deleteComment, updateCommentRate, addReply, de
       </div>
       {isCommentsVisible && (
         <div className="comments">
-          {comments.map(comment => (
+          {comments.map((comment, index) => (
             <Comment
-              key={post.comments.indexOf(comment)}
+              key={index}
               comment={comment}
-              commentIndex={post.comments.indexOf(comment)}
               postId={post.id}
               addReply={addReply}
               deleteReply={deleteReply}

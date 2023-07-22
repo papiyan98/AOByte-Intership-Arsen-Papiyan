@@ -4,17 +4,18 @@ import HeaderContainer from './containers/HeaderContainer/HeaderContainer';
 import PostsBoardContainer from './containers/PostsBoardContainer/PostsBoardContainer';
 import RatingListContainer from './containers/RatingListContainer/RatingListContainer';
 
-import { asyncData, disableAllButtons } from './helpers';
+import { asyncData } from './helpers';
 
 import './App.scss';
 
-const PostApp = () => {
+const App = () => {
   const [pool, setPool] = useState([]);
   const [searchedPosts, setSearchedPosts] = useState([]);
   const [isReseted, setIsReseted] = useState(false);
 
   useEffect(() => {
     const dataPromise = asyncData();
+    
     dataPromise.then(({ postsData }) => {
       setPool(postsData);
     })
@@ -36,7 +37,7 @@ const PostApp = () => {
     setSearchedPosts([]);
     setIsReseted(!isReseted);
 
-    disableAllButtons();
+    // disableAllButtons();
     clearSearchedPosts();
   }
 
@@ -62,4 +63,4 @@ const PostApp = () => {
   )
 }
 
-export default PostApp;
+export default App;

@@ -2,20 +2,20 @@ import React from "react";
 
 import './styles.scss';
 
-const CommentForm = ({ comment, post, postId, small, addComment, onCommentReply }) => {
+const CommentForm = ({ comment, post, postId, small, addComment, addReply }) => {
   const onFormSubmitHandler = (event) => {
     event.preventDefault();
 
     const textInput = event.target.textInput.value;
-
+    
     if (!textInput) {
       return;
     }
     
     if (event.target.className.includes("Reply")) {
       const reply = { commentor: "Guest", text: textInput, rate: 0, replies: [], date: Date.now(), isDeletable: true };
-
-      onCommentReply(reply, comment, postId);
+      
+      addReply(reply, comment, postId);
     } else {
       const comment = { commentor: "Guest", text: textInput, rate: 0, replies: [], date: Date.now(), isDeletable: true };
       

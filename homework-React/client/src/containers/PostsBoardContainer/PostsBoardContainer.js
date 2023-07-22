@@ -1,12 +1,13 @@
 import React from "react";
+import { isEqual, cloneDeep } from "lodash";
 
 import PostsBoard from "../../components/PostsBoard/PostsBoard";
 
-import './styles.scss';
+import './styles.scss'; 
 
 const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => {
   const addComment = (comment, id) => {
-    const newPool = [...pool];
+    const newPool = cloneDeep(pool);
     
     newPool.forEach(post => {
       if (post.id === id) {
@@ -17,14 +18,16 @@ const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => 
     updatePool(newPool);
   }
 
-  const addReply = (reply, comment, postId) => {
-    const newPool = [...pool];
+  const addReply = (reply, targetComment, postId) => {
+    const newPool = cloneDeep(pool);
 
     newPool.forEach(post => {
       if (post.id === postId) {
-        const index = post.comments.indexOf(comment);
-        
-        post.comments[index].replies.push(reply);
+        post.comments.forEach(comment => {
+          if (isEqual(comment, targetComment)) {
+            comment.replies.push(reply);
+          }
+        });
       }
     });
 
@@ -32,7 +35,7 @@ const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => 
   }
 
   const deleteComment = (comment, postId) => {
-    const newPool = [...pool];
+    const newPool = cloneDeep(pool);
 
     newPool.forEach(post => {
       if (post.id === postId) {
@@ -45,14 +48,18 @@ const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => 
     updatePool(newPool);
   }
 
-  const deleteReply = (selectedReply, commentIndex, postId) => {
-    const newPool = [...pool];
+  const deleteReply = (selectedReply, targetComment, postId) => {
+    const newPool = cloneDeep(pool);
     
     newPool.forEach(post => {
       if (post.id === postId) {
-        post.comments[commentIndex].replies.forEach((reply, index) => {
-          if (JSON.stringify(reply) === JSON.stringify(selectedReply)) {
-            post.comments[commentIndex].replies.splice(index, 1);
+        post.comments.forEach(comment => {
+          if (isEqual(comment, targetComment)) {
+            comment.replies.forEach((reply, index) => {
+              if (isEqual(reply, selectedReply)) {
+                comment.replies.splice(index, 1);
+              }
+            });
           }
         });
       }
@@ -62,17 +69,19 @@ const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => 
   }
 
   const updateCommentRate = (postId, ratedComment, newRate) => {
-    const newPool = [...pool];
+    const newPool = cloneDeep(pool);
 
     newPool.forEach(post => {
       if (post.id === postId) {
         post.comments.forEach(comment => {
-          if (JSON.stringify(comment) === JSON.stringify(ratedComment)) {
+          if (isEqual(comment, ratedComment)) {
             if (comment.rate) {
               comment.rate = (comment.rate + newRate) / 2;
             } else {
               comment.rate = newRate;
             }
+
+            comment.isRated = true;
           }
         });
       }
@@ -81,20 +90,22 @@ const PostsBoardContainer = ({ pool, updatePool, searchedPosts, isReseted }) => 
     updatePool(newPool);
   }
 
-  const updateCommentReplyRate = (postId, commentIndex, ratedReply, newRate) => {
-    const newPool = [...pool];
-    
+  const updateCommentReplyRate = (postId, targetComment, ratedReply, newRate) => {
+    const newPool = cloneDeep(pool);
+
     newPool.forEach(post => {
       if (post.id === postId) {
-        post.comments[commentIndex].replies.forEach(reply => {
-          if (JSON.stringify(reply) === JSON.stringify(ratedReply)) {
-            if (reply.rate) {
-              reply.rate = (reply.rate + newRate) / 2;
-            } else {
-              reply.rate = newRate;
-            }
+        post.comments.forEach(comment => {
+          if (isEqual(comment, targetComment)) {
+            comment.replies.forEach(reply => {
+              if (isEqual(reply, ratedReply)) {
+                reply.rate = reply.rate ? (reply.rate + newRate) / 2 : newRate;
+
+                reply.isRated = true;
+              }
+            });
           }
-        })
+        }); 
       }
     });
 
