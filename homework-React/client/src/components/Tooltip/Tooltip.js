@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
-import TooltipBody from "./TooltipBody";
-
 import './styles.scss'
 
-const Tooltip = ({ replyTooltip, children, onTooltipHide }) => {
+const Tooltip = ({ replyTooltip, children, onTooltipHide, tooltipBody }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const onClickHandler = () => {
@@ -26,7 +24,7 @@ const Tooltip = ({ replyTooltip, children, onTooltipHide }) => {
       </div>
       {showTooltip && (
         <div className={!replyTooltip ? "tooltip" : "tooltip shifted"} onPointerLeave={onPointerLeaveHandler} data-rate>
-          <TooltipBody />
+          {tooltipBody}
         </div>
       )}
     </div>

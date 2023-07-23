@@ -20,3 +20,7 @@ Or you can build app for production:
 cd server
 npm run build
 ```
+
+For successful authorization use the following login data:
+*Email: test@aobyte.com
+*Password Test123.

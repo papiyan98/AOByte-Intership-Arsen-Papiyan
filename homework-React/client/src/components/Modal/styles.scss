@@ -1,0 +1,55 @@
+@import '../../styles/colors.scss';
+
+.modal-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $modal-background;
+
+  .modal {
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $modal-bg-low;
+    background-color: #fff;
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 10px;
+      font-size: 18px;
+      border: none;
+      background: none;
+      color: $accent-color;
+      cursor: pointer;
+
+      &:hover {
+        color: darken($accent-color, 5%);
+      }
+    }
+
+    .modal-content {
+      margin: 20px;
+
+      button {
+        float: right;
+        width: 80px;
+        height: 30px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        color: $white-bg;
+        background-color: $accent-color;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($accent-color, 5%);
+        }
+      }
+    }
+  }
+}

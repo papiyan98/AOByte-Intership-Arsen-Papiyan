@@ -5,6 +5,7 @@ import CommentForm from "../CommentForm/CommentForm";
 import Tooltip from "../Tooltip/Tooltip";
 
 import './styles.scss';
+import RateTooltip from "../RateTooltip/RateTooltip";
 
 const Comment = ({ comment, postId, deleteComment, addReply, deleteReply, updateCommentRate, updateCommentReplyRate }) => {
   const [showReplies, setShowReplies] = useState(false);
@@ -41,7 +42,7 @@ const Comment = ({ comment, postId, deleteComment, addReply, deleteReply, update
             </span>
           </span>
           <div className="comment-btns">
-            <Tooltip onTooltipHide={onTooltipHide}>
+            <Tooltip onTooltipHide={onTooltipHide} tooltipBody={<RateTooltip />}>
               <button className="rate-btn">
                 <img src={comment.isRated ? './images/star-icon.png' : './images/rate-icon.png'} alt="Like" />
                 <span>{comment.isRated ? 'Rated' : 'Rate'}</span>

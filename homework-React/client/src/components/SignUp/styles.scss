@@ -1,0 +1,79 @@
+@import '../../styles/colors.scss';
+
+.register-page-container {
+  position: relative;
+  height: 100vh;
+  background-color: $background-color;
+
+  .signup-page {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px $shadow-color, 0 8px 16px $shadow-color;
+    background-color: $white-bg;
+
+    .title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $accent-color;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+
+      input {
+        height: 40px;
+        padding: 0 10px;
+        border-radius: 5px;
+        border: 1px solid $button-background;
+        outline: none;
+
+        &::placeholder {
+          color: $button-background;
+          opacity: 1;
+          font-size: 1.1rem;
+        }
+
+        &:focus {
+          border: 1px solid $accent-color;
+        }
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+
+        label {
+          span {
+            color: $accent-color;
+          }
+        }
+      }
+
+      button {
+        height: 40px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        border: none;
+        color: $white-bg;
+        background-color: $accent-color;
+        cursor: pointer;
+      }
+    }
+  }
+}

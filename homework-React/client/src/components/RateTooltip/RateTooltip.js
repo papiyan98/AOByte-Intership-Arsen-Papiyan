@@ -1,6 +1,6 @@
 import React from "react";
 
-const TooltipBody = () => {
+const RateTooltip = () => {
   const onRateClickHandler = (event) => {
     const rateImages = event.target.parentElement.children;
 
@@ -28,4 +28,4 @@ const TooltipBody = () => {
   )
 }
 
-export default TooltipBody;
+export default RateTooltip;
