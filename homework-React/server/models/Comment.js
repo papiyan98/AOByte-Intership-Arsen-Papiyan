@@ -13,12 +13,10 @@ const commentSchema = new mongoose.Schema({
       text: String,
       rate: Number,
       date: Date,
-      isRated: Boolean,
-      isDeletable: Boolean
+      isRated: Boolean
     })],
     date: Date,
-    isRated: Boolean,
-    isDeletable: Boolean
+    isRated: Boolean
   })]
 });
 

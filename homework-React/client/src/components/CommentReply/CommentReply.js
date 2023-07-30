@@ -36,13 +36,13 @@ const CommentReply = ({ reply, deleteReply, updateReplyRate }) => {
         </span>
         <div className="reply-btns">
           <Tooltip onTooltipHide={onTooltipHide} tooltipBody={<RateTooltip />} replyTooltip={true} >
-            <button className="reply-rate-btn">
+            <button className="reply-rate-btn dark-btn btn-text-color">
               <img src={reply.isRated ? starIcon : rateIcon} alt="Like" />
               <span>{reply.isRated ? 'Rated' : 'Rate'}</span>
             </button>
           </Tooltip>
           {reply.commentor.email === Cookies.get('email') && (
-            <button className="delete-btn" onClick={onDeleteBtnClickHandler}>
+            <button className="delete-btn dark-btn btn-text-color" onClick={onDeleteBtnClickHandler}>
               <img src={deleteIcon} alt="Delete" />
               <span>Delete</span>
             </button>

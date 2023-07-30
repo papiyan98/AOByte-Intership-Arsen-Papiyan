@@ -31,7 +31,7 @@ const CommentForm = ({ postId, small, addReply, onAddCommentTrigger }) => {
       return;
     }
 
-    if (event.target.className.includes("Reply")) {
+    if (event.target.className.startsWith("reply")) {
       const reply = { commentor: user, text: textInput, rate: 0, replies: [], date: new Date(), isRated: false, isDeletable: true };
       
       addReply(reply, postId);
@@ -53,7 +53,7 @@ const CommentForm = ({ postId, small, addReply, onAddCommentTrigger }) => {
 
   return (
     <>
-      <form className={!small ? "addComment-form" : "addReply-form"} onSubmit={onFormSubmitHandler}>
+      <form className={!small ? "comment-form" : "reply-form"} onSubmit={onFormSubmitHandler}>
         <input className="text-input" type="text" name="textInput" placeholder="Your comment..." autoComplete="off" />
         <button className="send-btn" type="submit">
           <img src={sendIcon} alt="Send" />

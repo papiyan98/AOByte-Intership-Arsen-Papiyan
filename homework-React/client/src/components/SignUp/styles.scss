@@ -3,7 +3,6 @@
 .register-page-container {
   position: relative;
   height: 100vh;
-  background-color: $background-color;
 
   .signup-page {
     position: absolute;
@@ -59,6 +58,14 @@
       text-align: center;
       span {
         color: $accent-color;
+      }
+    }
+
+    &.dark-mode {
+      background-color: #56585a;
+
+      input {
+        background: transparent;
       }
     }
   }

@@ -74,17 +74,17 @@ const Comment = ({ comment, postId, deleteComment, updateCommentRate }) => {
           </span>
           <div className="comment-btns">
             <Tooltip onTooltipHide={onTooltipHide} tooltipBody={<RateTooltip />}>
-              <button className="rate-btn dark-btn">
+              <button className="rate-btn dark-btn btn-text-color">
                 <img src={comment.isRated ? starIcon : rateIcon} alt="Like" />
                 <span>{comment.isRated ? 'Rated' : 'Rate'}</span>
               </button>
             </Tooltip>
-            <button className="reply-btn dark-btn" onClick={onReplyBtnClickHandler}>
+            <button className="reply-btn dark-btn btn-text-color" onClick={onReplyBtnClickHandler}>
               <img src={replyIcon} alt="Reply" />
               <span>Reply</span>
             </button>
             {comment.commentor.email === Cookies.get('email') && (
-              <button className="delete-btn" onClick={onDeleteBtnClickHandler}>
+              <button className="delete-btn dark-btn btn-text-color" onClick={onDeleteBtnClickHandler}>
                 <img src={deleteIcon} alt="Delete" />
                 <span>Delete</span>
               </button>

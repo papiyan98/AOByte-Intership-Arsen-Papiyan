@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 import ThemeSwitcher from "../../components/ThemeSwitcher/ThemeSwitcher";
+import UserButton from "../../components/UserButton/UserButton";
 import AuthButton from "../../components/AuthButton/AuthButton";
 import SearchBar from "../../components/SearchBar/SearchBar";
-
-import userShortcut from "../../assets/images/user-shortcut.png";
-import settingsIcon from "../../assets/images/settings.png";
 
 import './styles.scss';
 
@@ -27,13 +25,9 @@ const HeaderContainer = ({ pool, addSearchedPosts, clearSearchedPosts  }) => {
         clearSearchedPosts={clearSearchedPosts}
       />
       {cookieValue ? (
-        <div className="user-info">
-          <img className="user-photo" src={userShortcut} alt="" />
-          <span className="user-name">{cookieValue}</span>
-          <button>
-            <img className="user-settings" src={settingsIcon} alt="" />
-          </button>
-        </div>
+        <UserButton 
+          userName={cookieValue}
+        />
       ) : (
         <AuthButton />
       )}

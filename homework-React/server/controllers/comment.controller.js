@@ -1,6 +1,3 @@
-
-const _ = require("lodash");
-
 const CommentModel = require("../models/Comment");
 
 const getComments = async (req, res) => {

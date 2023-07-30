@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Modal from "../Modal/Modal";
 import Spinner from "../Spinner/Spinner";
 import AuthFormInput from "../AuthFormInput/AuthFormInput";
+
+import { ThemeContext } from "../../context/Theme.context";
 
 import { registerUser } from "../../services/auth.service";
 
@@ -21,6 +23,8 @@ const SignUp = () => {
   const [nameError, setNameError] = useState('');
   const [isPassNotEqual, setIsPassNotEqual] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const themeContext = useContext(ThemeContext);
 
   const navigate = useNavigate();
 
@@ -116,7 +120,7 @@ const SignUp = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="signup-page">
+        <div className={`signup-page ${themeContext.isDarkTheme && 'dark-mode'}`}>
           <span className="title">Sign Up</span>
           <form onSubmit={onSubmitHandler}>
             <AuthFormInput 

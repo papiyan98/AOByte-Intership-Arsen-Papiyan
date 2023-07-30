@@ -4,9 +4,11 @@
     background-color: rgb(42, 42, 42);
 
     input {
-      &:focus {
-        color: #fff;
-      }
+      color: #fff;
+    }
+
+    .modal {
+      background-color: #56585a;
     }
   }
 }

@@ -1,6 +1,6 @@
 @import '../../styles/colors.scss';
 
-.addComment-form {
+.comment-form {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -29,7 +29,7 @@
   }
 }
 
-.addReply-form {
+.reply-form {
   display: flex;
   align-items: center;
   gap: 20px;

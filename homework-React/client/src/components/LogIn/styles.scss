@@ -3,7 +3,6 @@
 .login-page-container {
   position: relative;
   height: 100vh;
-  background-color: $background-color;
 
   .login-page {
     position: absolute;
@@ -90,6 +89,14 @@
         &:hover {
           background-color: darken($primary-color, 5%);
         }
+      }
+    }
+
+    &.dark-mode {
+      background-color: #56585a;
+
+      input {
+        background: transparent;
       }
     }
   }

@@ -12,7 +12,6 @@ import './styles.scss'
 const ThemeSwitcher = () => {
   const { isDarkTheme, toggleTheme } = useTheme();
 
-  console.log(isDarkTheme);
   return (
     <Button 
       text="Theme"

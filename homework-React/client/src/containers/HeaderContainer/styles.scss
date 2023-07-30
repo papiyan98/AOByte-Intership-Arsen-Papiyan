@@ -4,31 +4,4 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 40px;
-    padding: 10px 20px;
-    margin-right: 20px;
-    border-radius: 10px;
-    color: $white-bg;
-    background-color: $accent-color;
-
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      border-radius: 20px;
-      border: none;
-      background-color: darken($accent-color, 15%);
-      cursor: pointer;
-
-      img {
-        width: 30px;
-      }
-    }
-  }
 }
