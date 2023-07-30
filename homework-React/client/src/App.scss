@@ -1,0 +1,12 @@
+.app-container {
+  &.dark-mode {
+    color: #fff;
+    background-color: rgb(42, 42, 42);
+
+    input {
+      &:focus {
+        color: #fff;
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+@import '../../styles/colors.scss';
+
+.post {
+  padding: 20px 30px;
+  border: 2px solid $primary-color;
+  border-radius: 10px;
+  background: $background-color;
+
+  .post-info {
+    border: 2px solid $accent-color;
+    margin-bottom: 20px;
+
+    .post-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $primary-color;
+    }
+  
+    .post-text {
+      font-size: 1.1rem;
+    }
+  }
+
+  .post-btns {
+    display: flex;
+    gap: 20px;
+  }
+
+  .comments-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 80px;
+    height: 50px;
+    border: none;
+    border-radius: 50px;
+    background: $button-background;
+    cursor: pointer;
+
+    img {
+      width: 30px;
+    }
+
+    span {
+      color: $accent-color;
+      font-size: 18px;
+    }
+  }
+
+  .comments {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0 20px 70px;
+  }
+
+  &.dark-mode {
+    background: rgb(42, 42, 42);
+
+    .dark-btn {
+      background-color: $secondary-color;
+    }
+  }
+}

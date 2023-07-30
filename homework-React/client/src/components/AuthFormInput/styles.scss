@@ -1,0 +1,44 @@
+@import '../../styles/colors.scss';
+
+.wrapper {
+  position: relative;
+
+  input {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid $button-background;
+    box-sizing: border-box;
+    outline: none;
+
+    &::placeholder {
+      color: $button-background;
+      opacity: 1;
+      font-size: 1.1rem;
+    }
+
+    &:focus {
+      border: 1px solid $accent-color;
+    }
+
+    &.invalid {
+      border: 1px solid $red-color;
+    }
+  }
+
+  .icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(-20px);
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 4px;
+    box-sizing: border-box;
+
+    img {
+      width: 30px;
+    }
+  }
+}

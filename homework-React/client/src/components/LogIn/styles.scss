@@ -1,0 +1,96 @@
+@import '../../styles/colors.scss';
+
+.login-page-container {
+  position: relative;
+  height: 100vh;
+  background-color: $background-color;
+
+  .login-page {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px $shadow-color, 0 8px 16px $shadow-color;
+    background-color: $white-bg;
+  
+    .title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $accent-color;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+
+      button {
+        height: 40px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        border: none;
+        color: $white-bg;
+        background-color: $accent-color;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($accent-color, 5%);
+        }
+      }
+    }
+
+    .error-message {
+      height: 20px;
+      color: $red-color;
+    }
+
+    a {
+      text-decoration: none;
+      color: $accent-color;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    hr {
+      width: 100%;
+    }
+
+    .register-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+
+      span {
+        color: $primary-color;
+      }
+
+      button {
+        height: 40px;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        border: none;
+        color: $white-bg;
+        background-color: $primary-color;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($primary-color, 5%);
+        }
+      }
+    }
+  }
+}
