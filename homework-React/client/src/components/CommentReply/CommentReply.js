@@ -1,49 +1,56 @@
 import React from "react";
+import Cookies from "js-cookie";
 
 import Tooltip from "../Tooltip/Tooltip";
+import RateTooltip from "../RateTooltip/RateTooltip";
+
+import userIcon from "../../assets/images/user.png";
+import starIcon from "../../assets/images/star.png";
+import rateIcon from "../../assets/images/rate.png";
+import deleteIcon from "../../assets/images/delete-outfilled.png"
 
 import './styles.scss';
 
-const CommentReply = ({ reply, comment, postId, deleteReply, updateCommentReplyRate }) => {
+const CommentReply = ({ reply, deleteReply, updateReplyRate }) => {
   const onTooltipHide = (newRate) => {
-    updateCommentReplyRate(postId, comment, reply, +newRate);
-  }
+    updateReplyRate(reply, +newRate);
+  };
 
   const onDeleteBtnClickHandler = () => {
-    deleteReply(reply, comment, postId);
-  }
+    deleteReply(reply);
+  };
 
   return (
     <div className="replied-comment">
       <div className="commentor-avatar">
-        <img src="./images/user-icon.png" alt="User" />
+        <img src={userIcon} alt="User" />
       </div>
       <div className="comament-data">
-        <span className="commentor-name">{reply.commentor}</span>
+        <span className="commentor-name">{reply.commentor.name}</span>
         <span className="reply-box">
           <span className="reply-text">{reply.text}</span>
           <span className="reply-rate">
-            <img src="./images/star-icon.png" alt="Comment Rate" />
+            <img src={starIcon} alt="Comment Rate" />
             <span>{reply.rate}</span>
           </span>
         </span>
         <div className="reply-btns">
-          <Tooltip onTooltipHide={onTooltipHide} replyTooltip={true} >
+          <Tooltip onTooltipHide={onTooltipHide} tooltipBody={<RateTooltip />} replyTooltip={true} >
             <button className="reply-rate-btn">
-              <img src={reply.isRated ? './images/star-icon.png' : './images/rate-icon.png'} alt="Like" />
+              <img src={reply.isRated ? starIcon : rateIcon} alt="Like" />
               <span>{reply.isRated ? 'Rated' : 'Rate'}</span>
             </button>
           </Tooltip>
-          {reply.isDeletable && (
+          {reply.commentor.email === Cookies.get('email') && (
             <button className="delete-btn" onClick={onDeleteBtnClickHandler}>
-              <img src="./images/delete-icon-outfilled.png" alt="Delete" />
+              <img src={deleteIcon} alt="Delete" />
               <span>Delete</span>
             </button>
           )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CommentReply;

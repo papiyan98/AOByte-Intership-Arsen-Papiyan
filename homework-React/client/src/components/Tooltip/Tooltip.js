@@ -7,7 +7,7 @@ const Tooltip = ({ replyTooltip, children, onTooltipHide, tooltipBody }) => {
 
   const onClickHandler = () => {
     setShowTooltip(true);
-  }
+  };
 
   const onPointerLeaveHandler = (event) => {
     onTooltipHide(event.target.dataset.rate);
@@ -15,7 +15,7 @@ const Tooltip = ({ replyTooltip, children, onTooltipHide, tooltipBody }) => {
     setTimeout(() => {
       setShowTooltip(false);
     }, 300);
-  }
+  };
 
   return (
     <div className="tooltip-container">
@@ -28,7 +28,7 @@ const Tooltip = ({ replyTooltip, children, onTooltipHide, tooltipBody }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default Tooltip;

@@ -15,7 +15,7 @@ const CustomSelect = ({ options, defaulValue, onChange }) => {
 
     setSelectedOption(selected);
     setIsActive(false);
-  }
+  };
 
   const onClickHandler = (event) => {
     if (event.target.dataset.select === 'opened') {
@@ -25,11 +25,11 @@ const CustomSelect = ({ options, defaulValue, onChange }) => {
     }
 
     setIsActive(!isActive);
-  }
+  };
 
   return (
     <div className="select-container">
-      <select className="custom-select" defaultValue={selectedOption} onChange={onChangeHandler} onClick={onClickHandler} >
+      <select className="custom-select dark-btn" defaultValue={selectedOption} onChange={onChangeHandler} onClick={onClickHandler} >
         {options.map((option) => (
           <option key={option.value} className="custom-option" value={option.value}>
             {option.label}
@@ -37,7 +37,7 @@ const CustomSelect = ({ options, defaulValue, onChange }) => {
         ))}
       </select>
     </div>
-  )
-}
+  );
+};
 
 export default CustomSelect;

@@ -54,4 +54,12 @@
     gap: 20px;
     padding: 20px 0 20px 70px;
   }
+
+  &.dark-mode {
+    background: rgb(42, 42, 42);
+
+    .dark-btn {
+      background-color: $secondary-color;
+    }
+  }
 }

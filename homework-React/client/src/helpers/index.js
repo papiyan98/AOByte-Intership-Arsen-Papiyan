@@ -49,15 +49,22 @@ export const finalAverageRateCalculation = (post) => {
   return parseFloat(+(calcPostAverageRate(post)).toPrecision(2));
 }
 
-export const asyncData = async () => {
-  const response = await fetch("/api/data");
-  
-  const data = await response.json();
-
-  return data;
-}
-
 export const validateEmail = (email) => {
   const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return pattern.test(email);
+}
+
+export const getCookies = () => {
+  const cookies = document.cookie.split('; ').map(cookie => cookie.split('='));
+
+  const cookiesObj = cookies.map(cookie => {
+    const name = cookie[0];
+    const value = cookie[1];
+
+    return {
+      [name]: value
+    }
+  });
+
+  return cookiesObj;
 }

@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Home from './components/Home/Home';
 import LogIn from './components/LogIn/LogIn';
+import SignUp from './components/SignUp/SignUp';
+import NotFound from './components/NotFoundPage/NotFound';
+
+import { ThemeProvider } from './context/Theme.context';
 
 import './App.scss';
-import SignUp from './components/SignUp/SignUp';
 
 const App = () => {
+  const sessionTheme = sessionStorage.getItem('isDarkTheme');
+  
+  const [isDarkTheme, setIsDarkTheme] = useState(sessionTheme ? JSON.parse(sessionTheme) : false);
+
+  useEffect(() => {
+    sessionStorage.setItem('isDarkTheme', JSON.stringify(isDarkTheme));
+  }, [isDarkTheme]);
+
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
   return (
-    <div className='app-container'>
-      <Routes>
-        <Route path='/' element={ <Home /> } />
-        <Route path='/login' element={ <LogIn /> } />
-        <Route path='/signup' element={ <SignUp /> } />
-      </Routes>
+    <div className={`app-container ${isDarkTheme && 'dark-mode'}`}>
+      <ThemeProvider value={{ isDarkTheme, toggleTheme }}>
+        <Routes>
+          <Route path='/' element={ <Home /> } />
+          <Route path='/login' element={ <LogIn /> } />
+          <Route path='/register' element={ <SignUp /> } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ThemeProvider>
     </div>
   )
 }

@@ -19,6 +19,10 @@
     background-color: $button-background;
     cursor: pointer;
 
+    &.dark-mode {
+      background-color: $secondary-color;
+    }
+
     img {
       width: 20px
     }
@@ -35,6 +39,10 @@
     font-size: 1.2rem;
     background-color: $button-background;
     cursor: pointer;
+
+    &.dark-mode {
+      background-color: $secondary-color;
+    }
 
     img {
       width: 30px

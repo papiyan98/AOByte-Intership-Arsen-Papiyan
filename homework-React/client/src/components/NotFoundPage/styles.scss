@@ -1,0 +1,36 @@
+@import '../../styles/colors.scss';
+
+.not-found-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #17a2b8;
+  color: #fff;
+
+  .not-found-header {
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70%;
+    width: 100%;
+    padding: 20px 40px;
+    background-color: $white-bg;
+  }
+
+
+
+  .not-found-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .not-found-message {
+    font-size: 1.2rem;
+  }
+}

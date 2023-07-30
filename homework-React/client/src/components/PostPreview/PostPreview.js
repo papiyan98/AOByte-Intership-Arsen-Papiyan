@@ -2,6 +2,9 @@ import React from "react";
 
 import { finalAverageRateCalculation } from "../../helpers/index";
 
+import starIcon from "../../assets/images/star.png";
+import deleteIcon from "../../assets/images/delete.png";
+
 import './styles.scss'
 
 const PostPreview = ({ listId, post, deletePost  }) => {
@@ -13,12 +16,12 @@ const PostPreview = ({ listId, post, deletePost  }) => {
           <span className='description'>{(post.description).slice(0, 30)}...</span>
         </div>
         <span className='average-rate'>
-          <img src='./images/star-icon.png' alt='Average rate' />
+          <img src={starIcon} alt='Average rate' />
           {finalAverageRateCalculation(post)}
         </span>
       </div>
       <button className='delete-btn' onClick={() => deletePost(post, listId)}>
-        <img src="./images/delete-icon.png" alt="Delete" />
+        <img src={deleteIcon} alt="Delete" />
       </button>
     </div>
   )

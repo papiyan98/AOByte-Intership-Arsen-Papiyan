@@ -34,34 +34,13 @@
       gap: 10px;
       width: 100%;
 
-      input {
+      .error-message {
+        width: 100%;
         height: 40px;
-        padding: 0 10px;
-        border-radius: 5px;
-        border: 1px solid $button-background;
-        outline: none;
+        text-align: center;
 
-        &::placeholder {
-          color: $button-background;
-          opacity: 1;
-          font-size: 1.1rem;
-        }
-
-        &:focus {
-          border: 1px solid $accent-color;
-        }
-      }
-
-      .checkbox-container {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 10px;
-
-        label {
-          span {
-            color: $accent-color;
-          }
+        span {
+          color: $red-color;
         }
       }
 
@@ -73,6 +52,13 @@
         color: $white-bg;
         background-color: $accent-color;
         cursor: pointer;
+      }
+    }
+
+    .agreement-wrapper {
+      text-align: center;
+      span {
+        color: $accent-color;
       }
     }
   }

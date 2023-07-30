@@ -23,4 +23,4 @@ npm run build
 
 For successful authorization use the following login data:
 *Email: test@aobyte.com
-*Password Test123.
+*Password Test123

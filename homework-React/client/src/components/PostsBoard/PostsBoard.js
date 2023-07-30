@@ -5,20 +5,13 @@ import Post from "../Post/Post";
 
 import './styles.scss'
 
-const PostsBoard = ({ pool, searchedPosts, addComment, addReply, deleteComment, deleteReply, isReseted, updateCommentRate, updateCommentReplyRate }) => {
+const PostsBoard = ({ pool, searchedPosts }) => {
   let postsList = searchedPosts.length ? searchedPosts : pool;
-
+  
   postsList = postsList.map(post => (
     <Post 
       post={post} 
       key={post.id} 
-      addComment={addComment}
-      addReply={addReply}
-      isReseted={isReseted}
-      deleteReply={deleteReply}
-      deleteComment={deleteComment}
-      updateCommentRate={updateCommentRate}
-      updateCommentReplyRate={updateCommentReplyRate}
     />
   ));
   

@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import AuthFormInput from "../AuthFormInput/AuthFormInput";
+import Spinner from "../Spinner/Spinner";
 import Modal from "../Modal/Modal";
+
+import { loginUser } from "../../services/auth.service";
 
 import { validateEmail } from "../../helpers";
 
@@ -15,6 +18,7 @@ const LogIn = () => {
   const [passwordError, setPasswordError] = useState('');
   const [isSubmited, setIsSubmited] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,7 +32,7 @@ const LogIn = () => {
       setEmailError('Email is required.');
       valid = false;
     } else if (!validateEmail(email)) {
-      setEmailError('Imvalid email adress.');
+      setEmailError('Invalid email adress.');
       valid = false;
     }
 
@@ -46,25 +50,34 @@ const LogIn = () => {
   useEffect(() => {
     if (isSubmited) {
       if (validateForm()) {
-        const userData = JSON.parse(localStorage.getItem('testUser'));    
+        const userData = { email, password };
+        
+        setIsLoading(true);
 
-        if (email === userData.email && password === userData.password) {
-          navigate("/");
-        } else {
-          setIsModalOpen(true);
-        }
+        loginUser(userData)
+          .then(response => {
+            setIsLoading(false);
+            if (response.ok) {
+              navigate("/");
+            } else {
+              setIsModalOpen(true);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
       }
     }
   }, [email, password, isSubmited, validateForm, navigate]);
 
   const onSignUpBtnClickHandler = () => {
-    navigate("/signup");
-  }
+    navigate("/register");
+  };
 
   const onModalCloseHandler = () => {
     setIsModalOpen(false);
     setIsSubmited(false);
-  }
+  };
 
   const onLoginFormSubmitHandler = (event) => {
     event.preventDefault();
@@ -75,39 +88,43 @@ const LogIn = () => {
     setPassword(formData.get('password'));
 
     setIsSubmited(true);
-  }
+  };
 
   return (
     <div className="login-page-container">
-      <div className="login-page">
-        <span className="title">Sign In</span>
-        <form onSubmit={onLoginFormSubmitHandler}>
-          <AuthFormInput 
-            type="email"
-            name="email"
-            placeholder="Email"
-            inputError={emailError}
-          />
-          <AuthFormInput 
-            type="password"
-            name="password"
-            placeholder="Password"
-            inputError={passwordError}
-          />
-          <button type="submit">Log In</button>
-        </form>
-        <div className="error-message">
-          {isSubmited && (emailError || passwordError) && (
-            <span>{emailError} {passwordError}</span>
-          )}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="login-page">
+          <span className="title">Sign In</span>
+          <form onSubmit={onLoginFormSubmitHandler}>
+            <AuthFormInput 
+              type="email"
+              name="email"
+              placeholder="Email"
+              inputError={emailError}
+            />
+            <AuthFormInput 
+              type="password"
+              name="password"
+              placeholder="Password"
+              inputError={passwordError}
+            />
+            <button type="submit">Log In</button>
+          </form>
+          <div className="error-message">
+            {isSubmited && (emailError || passwordError) && (
+              <span>{emailError} {passwordError}</span>
+            )}
+          </div>
+          <Link to="/">Forgot password?</Link>
+          <hr />
+          <div className="register-box">
+            <span>Not registered yet?</span>
+            <button onClick={onSignUpBtnClickHandler}>Create new account</button>
+          </div>
         </div>
-        <Link to="/">Forgot password?</Link>
-        <hr />
-        <div className="register-box">
-          <span>Not registered yet?</span>
-          <button onClick={onSignUpBtnClickHandler}>Create new account</button>
-        </div>
-      </div>
+      )}
       <Modal isOpen={isModalOpen} onClose={onModalCloseHandler}>
         <div className="modal-content">
           <h2>User not found</h2>
@@ -116,7 +133,7 @@ const LogIn = () => {
         </div>
       </Modal>
     </div>
-  )
+  );
 };
 
 export default LogIn;
