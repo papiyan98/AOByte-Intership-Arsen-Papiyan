@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const CommentModel = require("../models/Comment");
 
 const addReply = async (req, res) => {
@@ -19,7 +20,12 @@ const addReply = async (req, res) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    matchedComment.replies.push(reply);
+    const newReply = {
+      _id: new mongoose.Types.ObjectId(),
+      ...reply
+    };
+
+    matchedComment.replies.push(newReply);
 
     await data.save();
 

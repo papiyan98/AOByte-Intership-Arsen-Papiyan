@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const CommentModel = require("../models/Comment");
 
 const getComments = async (req, res) => {
@@ -31,7 +32,12 @@ const addComment = async (req, res) => {
       return res.status(404).json({ message: "Failed to find comment data" });
     }
 
-    data.comments.push(comment);
+    const newComment = {
+      _id: new mongoose.Types.ObjectId(),
+      ...comment
+    };
+
+    data.comments.push(newComment);
     
     await data.save();
     
