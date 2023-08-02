@@ -16,16 +16,58 @@ import deleteIcon from "../../assets/images/delete-outfilled.png";
 
 import './styles.scss';
 
-const Comment = ({ comment, postId, deleteComment, updateCommentRate }) => {
-  const [replies, setReplies] = useState(comment.replies);
+const Comment = ({ comment, commentReplies, postId, deleteComment, updateCommentRate }) => {
+  const [replies, setReplies] = useState([...commentReplies].sort((a, b) => b.rate - a.rate));
   const [showReplies, setShowReplies] = useState(false);
+
+  const addReply = (newReply) => {
+    addReplyService(newReply, comment._id)
+      .then(updatedReplies => {
+        const filteredReplies = updatedReplies.filter(reply => reply.commentId === comment._id);
+
+        const sortedReplies = filteredReplies.sort((a, b) => b.rate - a.rate);
+
+        setReplies(sortedReplies);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const deleteReply = (reply) => {
+    deleteReplyService(reply)
+      .then(updatedReplies => {
+        const filteredReplies = updatedReplies.filter(reply => reply.commentId === comment._id);
+
+        const sortedReplies = filteredReplies.sort((a, b) => b.rate - a.rate);
+        
+        setReplies(sortedReplies);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const updateReplyRate = (replyId, newRate) => {
+    updateReplyRateService(replyId, newRate)
+      .then(updatedReplies => {
+        const filteredReplies = updatedReplies.filter(reply => reply.commentId === comment._id);
+
+        const sortedReplies = filteredReplies.sort((a, b) => b.rate - a.rate);
+        
+        setReplies(sortedReplies);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const onTooltipHide = (newRate) => {
     if (isNaN(newRate)) {
       return;
     }
 
-    updateCommentRate(postId, comment, +newRate);
+    updateCommentRate(comment._id, +newRate);
   };
 
   const onReplyBtnClickHandler = () => {
@@ -33,28 +75,7 @@ const Comment = ({ comment, postId, deleteComment, updateCommentRate }) => {
   };
 
   const onDeleteBtnClickHandler = () => {
-    deleteComment(comment, postId);
-  };
-
-  const addReply = (newReply) => {
-    addReplyService(newReply, comment, postId)
-      .then(updatedReplies => {
-        setReplies(updatedReplies);
-      });
-  };
-
-  const deleteReply = (reply) => {
-    deleteReplyService(reply, comment, postId)
-      .then(updatedReplies => {
-        setReplies(updatedReplies);
-      });
-  };
-
-  const updateReplyRate = (reply, newRate) => {
-    updateReplyRateService(reply, comment, postId, newRate)
-      .then(updatedReplies => {
-        setReplies(updatedReplies);
-      });
+    deleteComment(comment);
   };
   
   return (
@@ -75,8 +96,8 @@ const Comment = ({ comment, postId, deleteComment, updateCommentRate }) => {
           <div className="comment-btns">
             <Tooltip onTooltipHide={onTooltipHide} tooltipBody={<RateTooltip />}>
               <button className="rate-btn dark-btn btn-text-color">
-                <img src={comment.isRated ? starIcon : rateIcon} alt="Like" />
-                <span>{comment.isRated ? 'Rated' : 'Rate'}</span>
+                <img src={rateIcon} alt="Like" />
+                <span>Rate</span>
               </button>
             </Tooltip>
             <button className="reply-btn dark-btn btn-text-color" onClick={onReplyBtnClickHandler}>
@@ -105,7 +126,6 @@ const Comment = ({ comment, postId, deleteComment, updateCommentRate }) => {
           ))}
           <CommentForm 
             small={true}
-            postId={postId}
             addReply={addReply}
           />
         </div>

@@ -15,7 +15,7 @@ export const calcPostAverageRate = (post) => {
 export const filterMaxAverageRatedPost = (posts) => {
   let maxAverageRate = -Infinity;
   let maxAverageRatedPost = null;
-
+  
   posts.forEach(post => {
     const postAverageRate = calcPostAverageRate(post);
     

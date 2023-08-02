@@ -48,6 +48,9 @@ module.exports = {
   devServer: {
     static: path.resolve(__dirname, 'bundle.js'),
     port: 3000,
+    client: {
+      logging: 'none',
+    },
   },
   devtool: 'eval-source-map',
 };

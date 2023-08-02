@@ -7,5 +7,9 @@ export const getAllPostsService = async () => {
     }
   });
 
-  return await response.json();
+  if (response.ok) {
+    return await response.json()
+  } else {
+    throw new Error("Error fetching posts:");
+  }
 };

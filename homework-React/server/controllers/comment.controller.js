@@ -3,17 +3,13 @@ const CommentModel = require("../models/Comment");
 
 const getComments = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const data = await CommentModel.findOne({
-      "postId": id
-    });
+    const comments = await CommentModel.find().exec();
   
-    if (!data) {
+    if (!comments) {
       return res.status(404).json({ message: "Failed to get comments" });
     }
     
-    return res.status(200).json(data.comments);
+    return res.status(200).json(comments);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -23,25 +19,15 @@ const addComment = async (req, res) => {
   try {
     const { comment } = req.body;
     const { id } = req.params;
-    
-    const data = await CommentModel.findOne({
-      "postId": id
-    });
-    
-    if (!data) {
-      return res.status(404).json({ message: "Failed to find comment data" });
-    }
 
-    const newComment = {
-      _id: new mongoose.Types.ObjectId(),
+    await CommentModel.create({
+      postId: id,
       ...comment
-    };
+    });
 
-    data.comments.push(newComment);
+    const comments = await CommentModel.find().exec();
     
-    await data.save();
-    
-    return res.status(200).json(data);
+    return res.status(200).json(comments);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -49,28 +35,13 @@ const addComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   try {
-    const { commentToDelete } = req.body;
-    const { id } = req.params;
-    
-    const data = await CommentModel.findOne({
-      "postId": id
-    });
+    const { comment } = req.body;
 
-    if (!data) {
-      return res.status(404).json({ message: "Failed to find comment data" });
-    }
+    await CommentModel.deleteOne({ _id: comment._id });
 
-    const commentIndex = data.comments.findIndex(comment => JSON.stringify(comment) === JSON.stringify(commentToDelete));
+    const comments = await CommentModel.find().exec();
 
-    if (commentIndex === -1) {
-      return res.status(404).json({ message: "Comment not found" });
-    }
-
-    data.comments.splice(commentIndex, 1);
-
-    await data.save();
-
-    return res.status(200).json(data);
+    return res.status(200).json(comments);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -78,29 +49,22 @@ const deleteComment = async (req, res) => {
 
 const updateCommentRate = async (req, res) => {
   try {
-    const { ratedComment, newRate } = req.body;
+    const { newRate } = req.body;
     const { id } = req.params;
     
-    const data = await CommentModel.findOne({
-      "postId": id
-    });
-    
-    if (!data) {
-      return res.status(404).json({ message: "Failed to rate comment" });
-    }
-    
-    const commentToUpdate = data.comments.find(comment => JSON.stringify(comment) === JSON.stringify(ratedComment));
-    
-    if (!commentToUpdate) {
-      return res.status(404).json({ message: "Failed to find comment" });
+    const comment = await CommentModel.findById(id);
+
+    if (!comment) {
+      return res.status(404).json({ message: "Failed to find rated comment" });
     }
 
-    commentToUpdate.rate = (commentToUpdate.rate) ? (commentToUpdate.rate + newRate) / 2 : newRate;
-    commentToUpdate.isRated = true;
+    comment.rate = (comment.rate) ? (comment.rate + newRate) / 2 : newRate;
 
-    await data.save();
+    await comment.save();
 
-    return res.status(200).json(data.comments);
+    const comments = await CommentModel.find().exec();
+
+    return res.status(200).json(comments);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

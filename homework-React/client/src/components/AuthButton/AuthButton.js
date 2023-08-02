@@ -11,7 +11,7 @@ const AuthButton = () => {
   const navigate = useNavigate();
 
   const handleAuthBtnClick = () => {
-    navigate("/login");
+    navigate("/auth/login");
   };
 
   return (

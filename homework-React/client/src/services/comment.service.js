@@ -1,6 +1,22 @@
+export const getAllCommentsService = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  if (response.ok) {
+    return await response.json()
+  } else {
+    throw new Error("Error fetching comments:");
+  }
+};
+
 export const addCommentService = async (comment, postId) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments/add-comment/${postId}`, {
-    method: "PUT",
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
@@ -15,14 +31,14 @@ export const addCommentService = async (comment, postId) => {
   }
 };
 
-export const deleteCommentService = async (comment, postId) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments/delete-comment/${postId}`, {
-    method: "PUT",
+export const deleteCommentService = async (comment) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments/delete-comment`, {
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ commentToDelete: comment })
+    body: JSON.stringify({ comment })
   });
 
   if (response.ok) {
@@ -32,35 +48,19 @@ export const deleteCommentService = async (comment, postId) => {
   }
 };
 
-export const updateCommentRateService = async (postId, ratedComment, newRate) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments/update-comment-rate/${postId}`, {
-    method: "PUT",
+export const updateCommentRateService = async (commentId, newRate) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments/update-comment-rate/${commentId}`, {
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ ratedComment, newRate })
+    body: JSON.stringify({ newRate })
   });
   
   if (response.ok) {
     return await response.json();
   } else {
     throw new Error("Failed to update comment rate");
-  }
-};
-
-export const getAllCommentsService = async (postId) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}data/comments/${postId}`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-
-  if (response.ok) {
-    return await response.json()
-  } else {
-    throw new Error("Failed to fetch comments");
   }
 };

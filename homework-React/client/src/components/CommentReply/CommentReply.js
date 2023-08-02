@@ -13,7 +13,7 @@ import './styles.scss';
 
 const CommentReply = ({ reply, deleteReply, updateReplyRate }) => {
   const onTooltipHide = (newRate) => {
-    updateReplyRate(reply, +newRate);
+    updateReplyRate(reply._id, +newRate);
   };
 
   const onDeleteBtnClickHandler = () => {
@@ -37,8 +37,8 @@ const CommentReply = ({ reply, deleteReply, updateReplyRate }) => {
         <div className="reply-btns">
           <Tooltip onTooltipHide={onTooltipHide} tooltipBody={<RateTooltip />} replyTooltip={true} >
             <button className="reply-rate-btn dark-btn btn-text-color">
-              <img src={reply.isRated ? starIcon : rateIcon} alt="Like" />
-              <span>{reply.isRated ? 'Rated' : 'Rate'}</span>
+              <img src={rateIcon} alt="Like" />
+              <span>Rate</span>
             </button>
           </Tooltip>
           {reply.commentor.email === Cookies.get('email') && (

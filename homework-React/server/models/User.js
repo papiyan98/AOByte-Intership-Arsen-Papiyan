@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+
+const { hashPassword } = require("../middlewares/userMiddleware");
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
@@ -9,25 +10,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre('save', async function (next) {
-  const user = this;
-  
-  if (!user.isModified('password')) {
-    return next();
-  }
-
-  try {
-    const salt = await bcrypt.genSalt(10);
-
-    const hashedPassword = await bcrypt.hash(user.password, salt);
-
-    user.password = hashedPassword;
-
-    next();
-  } catch (error) {
-    return next(error);
-  }
-});
+userSchema.pre('save', hashPassword);
 
 const UserModel = mongoose.model('User', userSchema);
 

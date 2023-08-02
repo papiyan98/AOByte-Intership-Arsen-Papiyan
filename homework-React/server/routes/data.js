@@ -2,24 +2,26 @@ const express = require("express");
 
 const { getPosts } = require("../controllers/post.controller");
 const { getComments, addComment, deleteComment, updateCommentRate } = require("../controllers/comment.controller");
-const { addReply, deleteReply, updateReplyRate } = require("../controllers/reply.controller");
+const { getReplies, addReply, deleteReply, updateReplyRate } = require("../controllers/reply.controller");
 
 const router = express.Router();
 
 router.get('/posts', getPosts);
 
-router.get('/comments/:id', getComments);
+router.get('/comments', getComments);
 
-router.put('/comments/add-comment/:id', addComment);
+router.get('/replies', getReplies);
 
-router.put('/comments/delete-comment/:id', deleteComment);
+router.post('/comments/add-comment/:id', addComment);
 
-router.put('/comments/update-comment-rate/:id', updateCommentRate);
+router.post('/comments/delete-comment/', deleteComment);
 
-router.put('/replies/add-reply/:id', addReply);
+router.post('/comments/update-comment-rate/:id', updateCommentRate);
 
-router.put('/replies/delete-reply/:id', deleteReply);
+router.post('/replies/add-reply/:id', addReply);
 
-router.put('/replies/update-reply-rate/:id', updateReplyRate)
+router.post('/replies/delete-reply', deleteReply);
+
+router.post('/replies/update-reply-rate/:id', updateReplyRate)
 
 module.exports = router;

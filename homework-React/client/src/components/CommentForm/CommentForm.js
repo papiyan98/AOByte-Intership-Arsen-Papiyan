@@ -3,13 +3,11 @@ import Cookies from "js-cookie";
 
 import Modal from "../Modal/Modal";
 
-import { addCommentService } from "../../services/comment.service";
-
 import sendIcon from "../../assets/images/send.png";
 
 import './styles.scss';
 
-const CommentForm = ({ postId, small, addReply, onAddCommentTrigger }) => {
+const CommentForm = ({ small, addComment, addReply }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onFormSubmitHandler = (event) => {
@@ -31,17 +29,17 @@ const CommentForm = ({ postId, small, addReply, onAddCommentTrigger }) => {
       return;
     }
 
-    if (event.target.className.startsWith("reply")) {
-      const reply = { commentor: user, text: textInput, rate: 0, replies: [], date: new Date(), isRated: false, isDeletable: true };
-      
-      addReply(reply, postId);
+    const data = {
+      commentor: user, 
+      text: textInput, 
+      rate: 0, 
+      date: new Date()
+    };
+
+    if (event.target.className.startsWith("reply")) {      
+      addReply(data);
     } else {
-      const comment = { commentor: user, text: textInput, rate: 0, replies: [], date: new Date(), isRated: false, isDeletable: false };
-      
-      addCommentService(comment, postId)
-        .then(() => {
-          onAddCommentTrigger();
-        });
+      addComment(data);
     }
 
     event.target.reset();

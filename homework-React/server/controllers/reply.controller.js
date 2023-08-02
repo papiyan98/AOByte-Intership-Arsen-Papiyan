@@ -1,35 +1,32 @@
-const mongoose = require("mongoose");
-const CommentModel = require("../models/Comment");
+const ReplyModel = require("../models/Reply");
+
+const getReplies = async (req, res) => {
+  try {
+    const replies = await ReplyModel.find().exec();
+    
+    if (!replies) {
+      return res.status(404).json({ message: "Failed to get replies" });
+    }
+    
+    return res.status(200).json(replies);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 const addReply = async (req, res) => {
   try {
-    const { reply, repliedComment } = req.body;
+    const { reply } = req.body;
     const { id } = req.params;
-
-    const data = await CommentModel.findOne({
-      "postId": id
+    
+    await ReplyModel.create({
+      commentId: id,
+      ...reply
     });
 
-    if (!data) {
-      return res.status(404).json({ message: "Failed to add reply" });
-    }
+    const replies = await ReplyModel.find().exec();
 
-    const matchedComment = data.comments.find(comment => JSON.stringify(comment) === JSON.stringify(repliedComment));
-
-    if (!matchedComment) {
-      return res.status(404).json({ message: "Comment not found" });
-    }
-
-    const newReply = {
-      _id: new mongoose.Types.ObjectId(),
-      ...reply
-    };
-
-    matchedComment.replies.push(newReply);
-
-    await data.save();
-
-    return res.status(200).json(matchedComment.replies);
+    return res.status(200).json(replies);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -37,34 +34,13 @@ const addReply = async (req, res) => {
 
 const deleteReply = async (req, res) => {
   try {
-    const { replyToDelete, repliedComment } = req.body;
-    const { id } = req.params;
-    
-    const data = await CommentModel.findOne({
-      "postId": id
-    });
+    const { reply } = req.body;
 
-    if (!data) {
-      return res.status(404).json({ message: "Failed to delete comment" });
-    }
+    await ReplyModel.deleteOne({ _id: reply._id });
 
-    const matchedComment = data.comments.find(comment => JSON.stringify(comment) === JSON.stringify(repliedComment));
+    const replies = await ReplyModel.find().exec();
 
-    if (!matchedComment) {
-      return res.status(404).json({ message: "Comment not found" });
-    }
-
-    const replyIndex = matchedComment.replies.findIndex(reply => JSON.stringify(reply) === JSON.stringify(replyToDelete));
-
-    if (replyIndex === -1) {
-      return res.status(404).json({ message: "Reply not found" });
-    }
-
-    matchedComment.replies.splice(replyIndex, 1);
-
-    await data.save();
-
-    return res.status(200).json(matchedComment.replies);
+    return res.status(200).json(replies);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -72,38 +48,25 @@ const deleteReply = async (req, res) => {
 
 const updateReplyRate = async (req, res) => {
   try {
-    const { ratedReply, repliedComment, newRate } = req.body;
+    const { newRate } = req.body;
     const { id } = req.params;
 
-    const data = await CommentModel.findOne({
-      "postId": id
-    });
+    const reply = await ReplyModel.findById(id);
 
-    if (!data) {
-      return res.status(404).json({ message: "Failed to find comment data" });
+    if (!reply) {
+      return res.status(404).json({ message: "Failed to find rated reply" });
     }
 
-    const matchedComment = data.comments.find(comment => JSON.stringify(comment) === JSON.stringify(repliedComment));
+    reply.rate = (reply.rate) ? (reply.rate + newRate) / 2 : newRate;
 
-    if (!matchedComment) {
-      return res.status(404).json({ message: "Comment not found" });
-    }
+    await reply.save();
 
-    const replyToUpdate = matchedComment.replies.find(reply => JSON.stringify(reply) === JSON.stringify(ratedReply));
+    const replies = await ReplyModel.find().exec();
 
-    if (!replyToUpdate) {
-      return res.status(404).json({ message: "Failed to find reply" });
-    }
-
-    replyToUpdate.rate = (replyToUpdate.rate) ? (replyToUpdate.rate + newRate) / 2 : newRate;
-    replyToUpdate.isRated = true;
-
-    await data.save();
-
-    return res.status(200).json(data.comments.id(comment._id).replies);
+    return res.status(200).json(replies);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { addReply, deleteReply, updateReplyRate };
+module.exports = { getReplies, addReply, deleteReply, updateReplyRate };

@@ -13,7 +13,7 @@ import { validateEmail } from "../../helpers";
 
 import './styles.scss';
 
-const SignUp = () => {
+const Register = () => {
   const [modalTitle, setModalTitle] = useState('');
   const [modalMessage, setModalMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,7 +111,7 @@ const SignUp = () => {
 
     if (isSuccessfull) {
       setIsSuccessfull(false);
-      navigate("/login");
+      navigate("/auth/login");
     }
   };
 
@@ -170,4 +170,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

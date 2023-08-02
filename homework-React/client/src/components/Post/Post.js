@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { cloneDeep } from "lodash";
 
 import CustomSelect from "../CustomSelect/CustomSelect";
@@ -7,7 +7,7 @@ import Comment from "../Comment/Comment";
 
 import { ThemeContext } from "../../context/Theme.context";
 
-import { getAllCommentsService, deleteCommentService, updateCommentRateService } from "../../services/comment.service";
+import { addCommentService, deleteCommentService, updateCommentRateService } from "../../services/comment.service";
 
 import { selectOptions } from "../../constants";
 
@@ -16,47 +16,51 @@ import commentIcon from "../../assets/images/comment.png";
 import './styles.scss';
 
 
-const Post = ({ post }) => {
-  const [comments, setComments] = useState([]);
-  const [isCommented, setIsCommented] = useState(false);
+const Post = ({ post, postComments, replies }) => {
+  const [comments, setComments] = useState([...postComments].sort((a, b) => b.rate - a.rate));
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 
   const themeContext = useContext(ThemeContext);
 
-  useEffect(() => {
-    getComments(post._id)
-      .then(res => {
-        setComments(res);
-      })
-  }, [isCommented]);
-
-  const getComments = async (postId) => {
-    const fetchedComments = await getAllCommentsService(postId);
-    
-    const sortedComments = fetchedComments.sort((a, b) => b.rate - a.rate);
-
-    return sortedComments;
-  };
-
-  const addCommentTrigger = () => {
-    setIsCommented(!isCommented);
-  };
-
-  const deleteComment = (comment, postId) => {
-    deleteCommentService(comment, postId)
-      .then(({ comments }) => {
-        const sortedComments = comments.sort((a, b) => b.rate - a.rate);
-
-        setComments(sortedComments);
-      })
-  }
-
-  const updateCommentRate = (postId, ratedComment, newRate) => {
-    updateCommentRateService(postId, ratedComment, newRate)
+  const addComment = (newComment) => {
+    addCommentService(newComment, post._id)
       .then(updatedComments => {
-        const sortedComments = updatedComments.sort((a, b) => b.rate - a.rate);
+        const filteredComments = updatedComments.filter(comment => comment.postId === post._id);
+        
+        const sortedComments = filteredComments.sort((a, b) => b.rate - a.rate);
 
         setComments(sortedComments);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const deleteComment = (comment) => {
+    deleteCommentService(comment)
+      .then(updatedComments => {
+        const filteredComments = updatedComments.filter(comment => comment.postId === post._id);
+
+        const sortedComments = filteredComments.sort((a, b) => b.rate - a.rate);
+
+        setComments(sortedComments);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const updateCommentRate = (commentId, newRate) => {
+    updateCommentRateService(commentId, newRate)
+      .then(updatedComments => {
+        const filteredComments = updatedComments.filter(comment => comment.postId === post._id);
+        
+        const sortedComments = filteredComments.sort((a, b) => b.rate - a.rate);
+
+        setComments(sortedComments);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -104,18 +108,23 @@ const Post = ({ post }) => {
       </div>
       {isCommentsVisible && (
         <div className="comments">
-          {comments.map((comment, index) => (
-            <Comment
-              key={index}
-              comment={comment}
-              postId={post._id}
-              deleteComment={deleteComment}
-              updateCommentRate={updateCommentRate}
-            />
-          ))}
+          {comments.map((comment, index) => {
+            const filtredReplies = replies.filter(reply => reply.commentId === comment._id);
+            
+            return (
+              <Comment
+                key={index}
+                comment={comment}
+                commentReplies={filtredReplies}
+                postId={post._id}
+                deleteComment={deleteComment}
+                updateCommentRate={updateCommentRate}
+              />
+            )
+          })}
           <CommentForm 
             postId={post._id}
-            onAddCommentTrigger={addCommentTrigger}
+            addComment={addComment}
           />
         </div>
       )}

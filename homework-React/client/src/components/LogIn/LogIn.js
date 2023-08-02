@@ -75,7 +75,7 @@ const LogIn = () => {
   }, [email, password, isSubmited, validateForm, navigate]);
 
   const onSignUpBtnClickHandler = () => {
-    navigate("/register");
+    navigate("/auth/register");
   };
 
   const onModalCloseHandler = () => {

@@ -30,13 +30,13 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
-
+    
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-
+    
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid credentials.' });
     }

@@ -1,28 +1,44 @@
-export const addReplyService = async (reply, comment, postId) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies/add-reply/${postId}`, {
-    method: "PUT",
+export const getAllRepliesService = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  if (response.ok) {
+    return await response.json()
+  } else {
+    throw new Error("Error fetching replies:");
+  }
+};
+
+export const addReplyService = async (reply, commentId) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies/add-reply/${commentId}`, {
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ reply, repliedComment: comment })
+    body: JSON.stringify({ reply })
   });
   
   if (response.ok) {
     return await response.json();
   } else {
-    throw new Error("Failed to add comment");
+    throw new Error("Failed to add reply");
   }
 };
 
-export const deleteReplyService = async (reply, comment, postId) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies/delete-reply/${postId}`, {
-    method: "PUT",
+export const deleteReplyService = async (reply) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies/delete-reply`, {
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ replyToDelete: reply, repliedComment: comment })
+    body: JSON.stringify({ reply })
   });
 
   if (response.ok) {
@@ -32,15 +48,15 @@ export const deleteReplyService = async (reply, comment, postId) => {
   }
 };
 
-export const updateReplyRateService = async (ratedReply, comment, postId, newRate) => {
+export const updateReplyRateService = async (replyId, newRate) => {
   
-  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies/update-reply-rate/${postId}`, {
-    method: "PUT",
+  const response = await fetch(`${process.env.REACT_APP_API_URL}data/replies/update-reply-rate/${replyId}`, {
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ ratedReply, repliedComment: comment, newRate })
+    body: JSON.stringify({ newRate })
   });
 
   if (response.ok) {
